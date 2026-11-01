@@ -1476,43 +1476,31 @@
     </div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    /* 클라우드 실시간 동기화 환경 설정 */
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'rutae-calendar-shared';
-    let db = null;
-    let auth = null;
-    let currentUser = null;
-
-    if (typeof __firebase_config !== 'undefined') {
-      try {
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        auth = getAuth(app);
-
-        const initAuthAndSync = async () => {
-          try {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-              const cred = await signInWithCustomToken(auth, __initial_auth_token);
-              currentUser = cred.user;
-            } else {
-              const cred = await signInAnonymously(auth);
-              currentUser = cred.user;
-            }
-            startRealtimeSync();
-          } catch (e) {
-            console.error("Auth init error:", e);
-          }
-        };
-        initAuthAndSync();
-      } catch (e) {
-        console.error("Firebase init error:", e);
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCeY5NeOAZKOId2ixQOPDy4X3MvwaEJkN8",
+      authDomain: "rutae-calendar.firebaseapp.com",
+      databaseURL: "https://rutae-calendar-default-rtdb.firebaseio.com",
+      projectId: "rutae-calendar",
+      storageBucket: "rutae-calendar.firebasestorage.app",
+      messagingSenderId: "243247477550",
+      appId: "1:243247477550:web:0b82f4a9068f7bf7a700bf"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dataRef = firebase.database().ref('calendar_archive_shared');
+   dataRef.on('value', (snapshot) => {
+      const val = snapshot.val();
+      if (val) {
+        appData = val;
+        if (!appData.categories) appData.categories = [];
+        if (!appData.days) appData.days = {};
       }
-    }
+      renderCalendar();
+      updateCategoryDropdowns();
+      renderCategoryPanelList();
+    });
 
     /* 실제 접속 날짜 기준으로 실시간 자동 초기화 */
     const todayInit = new Date();
