@@ -1493,11 +1493,21 @@
    dataRef.on('value', (snapshot) => {
       const val = snapshot.val();
       if (val) {
-        appData = val;
-        if (!appData.categories) appData.categories = [];
-        if (!appData.days) appData.days = {};
+        if (val.categories) categories = val.categories;
+        if (val.archiveDataJson) {
+          try { 
+            archiveData = JSON.parse(val.archiveDataJson); 
+          } catch(e) {
+            console.error("데이터 변환 오류:", e);
+          }
+        }
       }
-      renderCalendar();
+      if (typeof renderCalendar === 'function') {
+        renderCalendar();
+      }
+      if (typeof openDetailView === 'function' && typeof selectedDateStr !== 'undefined' && selectedDateStr) {
+      openDetailView(selectedDateStr);
+    }
     });
 
     /* 실제 접속 날짜 기준으로 실시간 자동 초기화 */
