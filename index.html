@@ -1593,24 +1593,21 @@
     }
 
     function saveStorage() {
-      // 로컬 즉시 저장 백업
-      try {
-        localStorage.setItem('rutae_cats', JSON.stringify(categories));
-        localStorage.setItem('rutae_data', JSON.stringify(archiveData));
-      } catch(e) {}
+  try {
+    localStorage.setItem('rutae_cats', JSON.stringify(categories));
+    localStorage.setItem('rutae_data', JSON.stringify(archiveData));
+  } catch(e) {}
 
-      // 친구들과 실시간 공유되는 공용 클라우드에 영구 동기화
-      if (db && currentUser) {
-        const sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'rutae_shared_state', 'main');
-        setDoc(sharedDocRef, {
-          categories: categories,
-          archiveDataJson: JSON.stringify(archiveData),
-          updatedAt: Date.now()
-        }, { merge: true }).catch(err => {
-          console.error("클라우드 저장 오류:", err);
-        });
-      }
-    }
+  if (typeof dataRef !== 'undefined' && dataRef) {
+    dataRef.set({
+      categories: categories,
+      archiveDataJson: JSON.stringify(archiveData),
+      updatedAt: Date.now()
+    }).catch(err => {
+      console.error("클라우드 저장 오류:", err);
+    });
+  }
+}
 
     /* 다른 친구가 수정한 내용이 있으면 내 화면에도 실시간으로 자동 반영 */
     function startRealtimeSync() {
