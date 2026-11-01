@@ -89,7 +89,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.16);
     }
 
-    /* 중앙 월간 네비게이션: 헤더 정중앙 배치 */
+    /* 중앙 월간 네비게이션 */
     .month-nav-bar {
       position: absolute;
       left: 50%;
@@ -323,16 +323,6 @@
     }
     .search-result-item:hover {
       background: #f0fdf4;
-    }
-    .search-res-date {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--primary-green);
-    }
-    .search-res-content {
-      font-size: 12.5px;
-      color: var(--text-main);
-      word-break: break-all;
     }
 
     /* 햄버거 메뉴 */
@@ -1296,7 +1286,7 @@
           <i class="fa-solid fa-chevron-left"></i>
         </button>
         <div class="month-display-pill" id="monthDisplayBtn" title="원하는 년/월로 이동">
-          <!-- 스크립트 실행 시 현재 년/월로 자동 주입 -->
+          2026년 11월
         </div>
         <button class="nav-arrow-btn" id="nextMonthBtn" title="다음 달">
           <i class="fa-solid fa-chevron-right"></i>
@@ -1486,7 +1476,44 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    /* 클라우드 실시간 동기화 환경 설정 */
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'rutae-calendar-shared';
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+
+    if (typeof __firebase_config !== 'undefined') {
+      try {
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+
+        const initAuthAndSync = async () => {
+          try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+              const cred = await signInWithCustomToken(auth, __initial_auth_token);
+              currentUser = cred.user;
+            } else {
+              const cred = await signInAnonymously(auth);
+              currentUser = cred.user;
+            }
+            startRealtimeSync();
+          } catch (e) {
+            console.error("Auth init error:", e);
+          }
+        };
+        initAuthAndSync();
+      } catch (e) {
+        console.error("Firebase init error:", e);
+      }
+    }
+
     /* 실제 접속 날짜 기준으로 실시간 자동 초기화 */
     const todayInit = new Date();
     let currentYear = todayInit.getFullYear();
@@ -1578,8 +1605,57 @@
     }
 
     function saveStorage() {
-      localStorage.setItem('rutae_cats', JSON.stringify(categories));
-      localStorage.setItem('rutae_data', JSON.stringify(archiveData));
+      // 로컬 즉시 저장 백업
+      try {
+        localStorage.setItem('rutae_cats', JSON.stringify(categories));
+        localStorage.setItem('rutae_data', JSON.stringify(archiveData));
+      } catch(e) {}
+
+      // 친구들과 실시간 공유되는 공용 클라우드에 영구 동기화
+      if (db && currentUser) {
+        const sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'rutae_shared_state', 'main');
+        setDoc(sharedDocRef, {
+          categories: categories,
+          archiveDataJson: JSON.stringify(archiveData),
+          updatedAt: Date.now()
+        }, { merge: true }).catch(err => {
+          console.error("클라우드 저장 오류:", err);
+        });
+      }
+    }
+
+    /* 다른 친구가 수정한 내용이 있으면 내 화면에도 실시간으로 자동 반영 */
+    function startRealtimeSync() {
+      if (!db || !currentUser) return;
+      const sharedDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'rutae_shared_state', 'main');
+      
+      onSnapshot(sharedDocRef, (snap) => {
+        if (snap.exists()) {
+          const cloudData = snap.data();
+          if (cloudData.categories && Array.isArray(cloudData.categories) && cloudData.categories.length > 0) {
+            categories = cloudData.categories;
+          }
+          if (cloudData.archiveDataJson) {
+            try {
+              archiveData = JSON.parse(cloudData.archiveDataJson);
+            } catch(e) {}
+          }
+          
+          // 화면 UI 즉각 실시간 동기화
+          renderCalendar();
+          renderCompactCatList();
+          renderCustomSelectOptions();
+          const detailView = document.getElementById('detailView');
+          if (detailView && detailView.classList.contains('active')) {
+            renderDayDetail();
+          }
+        } else {
+          // 최초 접속 시 기존 기본 데이터를 클라우드에 시딩
+          saveStorage();
+        }
+      }, (err) => {
+        console.error("실시간 수신 에러:", err);
+      });
     }
 
     function showToast(msg) {
