@@ -34,7 +34,7 @@
       flex-direction: column;
     }
 
-    /* 상단 도트 패턴 헤더: 불규칙하고 자연스러운 도트 배치 */
+    /* 상단 도트 패턴 헤더: 불규칙하고 자연스러운 9포인트 도트 배치 */
     header {
       background-color: #38a169;
       background-image: 
@@ -67,7 +67,7 @@
       position: relative;
     }
 
-    /* 브랜드 타이틀 */
+    /* 브랜드 타이틀 뱃지 */
     .brand-badge {
       background: #ffffff;
       color: var(--deep-green);
@@ -89,7 +89,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.16);
     }
 
-    /* 중앙 월간 네비게이션: 헤더 정중앙 완벽 배치 */
+    /* 중앙 월간 네비게이션: 헤더 정중앙 배치 */
     .month-nav-bar {
       position: absolute;
       left: 50%;
@@ -137,7 +137,7 @@
       transform: scale(1.02);
     }
 
-    /* 년/월 바로 이동 팝업 모달 */
+    /* 년/월 빠른 이동 팝업 */
     .year-month-picker-pop {
       position: absolute;
       top: 54px;
@@ -243,7 +243,7 @@
       transform: scale(1.06);
     }
 
-    /* 검색 결과 내 검색어 초록색 하이라이트 */
+    /* 검색 단어 초록색 하이라이트 */
     .search-highlight-keyword {
       color: #2e7d32;
       background-color: #e8f5e9;
@@ -252,7 +252,7 @@
       border-radius: 4px;
     }
 
-    /* 확장 검색창 */
+    /* 검색창 */
     .search-box-wrap {
       display: none;
       align-items: center;
@@ -292,7 +292,7 @@
       to { width: 220px; opacity: 1; }
     }
 
-    /* 검색 결과 드롭다운 */
+    /* 검색 결과창 */
     .search-dropdown {
       position: absolute;
       top: 48px;
@@ -335,7 +335,7 @@
       word-break: break-all;
     }
 
-    /* 햄버거 메뉴 드롭다운 */
+    /* 햄버거 메뉴 */
     .menu-dropdown {
       position: absolute;
       top: 48px;
@@ -381,7 +381,7 @@
       text-align: center;
     }
 
-    /* 기념일 추가 모달창 */
+    /* 기념일 모달 */
     .anniversary-modal-overlay {
       position: fixed;
       top: 0;
@@ -431,7 +431,7 @@
       border-color: #38a169;
     }
 
-    /* 뷰 컨테이너 */
+    /* 메인 컨테이너 */
     main {
       flex: 1;
       max-width: 1200px;
@@ -451,9 +451,7 @@
       display: block;
     }
 
-    /* =========================================================
-       CALENDAR VIEW
-    ========================================================= */
+    /* 월별 캘린더 */
     .cal-wrapper {
       background: #ffffff;
       border-radius: 20px;
@@ -534,7 +532,6 @@
     .cal-day-cell.sunday .day-num { color: #ef4444; }
     .cal-day-cell.saturday .day-num { color: #3b82f6; }
 
-    /* 대표 멘트 타일 (달력 셀 내부 노출) */
     .rep-badge-tile {
       margin-top: 8px;
       background: #e8f5e9;
@@ -553,7 +550,6 @@
       -webkit-box-orient: vertical;
     }
 
-    /* 기념일 특별 배지 */
     .anniversary-badge-tile {
       margin-top: 5px;
       background: #fef3c7;
@@ -571,9 +567,7 @@
       text-overflow: ellipsis;
     }
 
-    /* =========================================================
-       DETAIL VIEW (일자별 페이지)
-    ========================================================= */
+    /* 일차별 상세 뷰 */
     .detail-container {
       display: flex;
       justify-content: center;
@@ -583,7 +577,6 @@
       min-height: calc(100vh - 120px);
     }
 
-    /* 중앙 본문 (고정 폭 800px, 정중앙 고정) */
     .detail-main-flow {
       width: 100%;
       max-width: 800px;
@@ -594,7 +587,6 @@
       transition: transform 0.22s ease-out, opacity 0.22s ease-out;
     }
 
-    /* 상단 네비 바 & 날짜 (중앙 기준 정렬) */
     .detail-nav-row {
       display: flex;
       align-items: center;
@@ -615,7 +607,6 @@
       letter-spacing: -0.3px;
     }
 
-    /* 통일된 섹션 헤더 폰트 및 스타일 */
     .section-unified-title {
       font-size: 15px;
       font-weight: 800;
@@ -627,7 +618,6 @@
       letter-spacing: -0.3px;
     }
 
-    /* 구역 1: 대표 멘트 카드 */
     .rep-card {
       background: #ffffff;
       border-radius: 18px;
@@ -664,7 +654,6 @@
       box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.15);
     }
 
-    /* 상단 배너와 통일된 초록색 버튼 (#38a169) */
     .btn-save-primary {
       background-color: #38a169;
       color: #ffffff;
@@ -686,7 +675,6 @@
       transform: translateY(-1px);
     }
 
-    /* 구역 2: 방송 기록 카드 */
     .record-card {
       background: #ffffff;
       border-radius: 18px;
@@ -734,7 +722,6 @@
       transform: translateY(-1px);
     }
 
-    /* 내용 추가 폼 */
     .record-form-wrap {
       display: none;
       background: #f7fbf8;
@@ -754,7 +741,6 @@
       align-items: flex-start;
     }
 
-    /* 커스텀 셀렉트 박스 */
     .custom-select-box {
       position: relative;
       width: 140px;
@@ -872,7 +858,6 @@
       background-color: #2f855a;
     }
 
-    /* 2열 방송 기록 카드 목록 */
     .record-grid-2col {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -947,7 +932,6 @@
       color: #ef4444;
     }
 
-    /* 구역 3: 하단 치지직 다시보기 카드 */
     .chzzk-link-card {
       background: #ffffff;
       border-radius: 18px;
@@ -988,9 +972,7 @@
       transform: translateY(-1px);
     }
 
-    /* =========================================================
-       왼쪽 독립 팝업창 (중앙 본문을 절대 밀지 않는 절대좌표 배치)
-    ========================================================= */
+    /* 카테고리 사이드 패널 */
     .category-side-panel {
       position: absolute;
       right: calc(50% + 420px);
@@ -1010,7 +992,6 @@
     .category-side-panel.active {
       display: flex;
     }
-
     .category-side-panel.closing {
       animation: fadeOutPopup 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
@@ -1054,7 +1035,7 @@
       color: #ef4444;
     }
 
-    /* 처음에 만족하셨던 6열 무지개 순서 팔레트 (외곽선 제거) */
+    /* 6열 무지개 팔레트 */
     .color-grid-rainbow {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -1080,7 +1061,7 @@
       transform: scale(1.12);
     }
 
-    /* 이모지 선택 그리드 */
+    /* 이모지 선택창 */
     .emoji-picker-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -1092,8 +1073,6 @@
       border-radius: 12px;
       border: 1.5px solid #edf4f0;
     }
-
-    /* 등록된 카테고리와 동일한 전용 스크롤바 디자인 적용 */
     .emoji-picker-grid::-webkit-scrollbar {
       width: 5px;
     }
@@ -1157,18 +1136,15 @@
       background-color: #2f855a;
     }
 
-    /* 2열 컴팩트 카테고리 목록 */
     .cat-compact-list-2col {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 6px;
-      max-height: 86px; /* 4개(2행)까지 깔끔하게 보이고 5개(3행)부터는 스크롤바 등장 */
+      max-height: 86px;
       overflow-y: auto;
       margin-top: 4px;
       padding-right: 4px;
     }
-
-    /* 5개 이상 시 나타나는 전용 스크롤바 디자인 */
     .cat-compact-list-2col::-webkit-scrollbar {
       width: 5px;
     }
@@ -1204,9 +1180,7 @@
       color: #ef4444;
     }
 
-    /* =========================================================
-       모달 & 토스트 알림
-    ========================================================= */
+    /* 토스트 및 모달 */
     .toast-pill {
       position: fixed;
       bottom: 24px;
@@ -1228,7 +1202,6 @@
       opacity: 1;
     }
 
-    /* 카테고리 삭제 확인 커스텀 모달 */
     .confirm-modal-overlay {
       position: fixed;
       top: 0;
@@ -1313,25 +1286,22 @@
   <!-- 상단 도트 패턴 헤더 -->
   <header>
     <div class="header-content">
-      <!-- 좌측: 브랜드 로고 (클릭 시 메인 달력 복귀) -->
       <div class="brand-badge" id="brandHomeBtn" title="메인 달력으로 이동">
         <span>🐸</span>
         <span>루태 캘린더</span>
       </div>
 
-      <!-- 중앙: 월별 네비게이션 -->
       <div class="month-nav-bar">
         <button class="nav-arrow-btn" id="prevMonthBtn" title="이전 달">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
         <div class="month-display-pill" id="monthDisplayBtn" title="원하는 년/월로 이동">
-          2026년 10월
+          2026년 11월
         </div>
         <button class="nav-arrow-btn" id="nextMonthBtn" title="다음 달">
           <i class="fa-solid fa-chevron-right"></i>
         </button>
 
-        <!-- 년/월 빠른 점프 드롭다운 모달 -->
         <div class="year-month-picker-pop" id="yearMonthPickerPop">
           <div class="ym-picker-year-row">
             <button class="ym-year-btn" id="pickerPrevYearBtn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -1342,7 +1312,6 @@
         </div>
       </div>
 
-      <!-- 우측: 돋보기 검색 & 공유/동기화 버튼 -->
       <div class="header-actions">
         <div class="search-box-wrap" id="searchBoxWrap">
           <i class="fa-solid fa-magnifying-glass" style="color:var(--primary-green); font-size:12px; margin-right:6px;"></i>
@@ -1352,17 +1321,14 @@
           </button>
         </div>
 
-        <!-- 돋보기 검색 버튼 -->
-        <button class="icon-action-btn" id="toggleSearchBtn" title="검색">
+        <button class="icon-action-btn" id="toggleSearchBtn" title="검색" style="display:none;">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
-        <!-- 월차별 전용 햄버거 메뉴 버튼 -->
         <button class="icon-action-btn" id="toggleMenuBtn" title="메뉴">
           <i class="fa-solid fa-bars"></i>
         </button>
 
-        <!-- 햄버거 메뉴 드롭다운 -->
         <div class="menu-dropdown" id="menuDropdown">
           <button class="menu-item-btn" id="menuShareBtn">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -1378,14 +1344,12 @@
           </button>
         </div>
 
-        <!-- 실시간 검색 결과 드롭다운 -->
         <div class="search-dropdown" id="searchDropdown"></div>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- VIEW 1: 메인 캘린더 화면 -->
     <section class="view-panel active" id="calendarView">
       <div class="cal-wrapper">
         <div class="cal-weekdays">
@@ -1395,45 +1359,36 @@
       </div>
     </section>
 
-    <!-- VIEW 2: 일자별 상세 페이지 -->
     <section class="view-panel" id="detailView">
       <div class="detail-container">
         
-        <!-- 왼쪽 독립 여백 카테고리 관리 패널 -->
         <div class="category-side-panel" id="categorySidePanel">
           <div class="cat-panel-header">
             <span>🎨 새 카테고리 추가</span>
             <button class="cat-close-btn" id="closeCatPanelBtn"><i class="fa-solid fa-xmark"></i></button>
           </div>
 
-          <!-- 무지개 순서 색상 선택 (6열) -->
           <div style="font-size:12px; font-weight:800; color:var(--text-sub);">색상 선택</div>
           <div class="color-grid-rainbow" id="rainbowColorGrid"></div>
 
-          <!-- 방송 맞춤 이모지 선택 (6열 그리드) -->
           <div style="font-size:12px; font-weight:800; color:var(--text-sub);">이모지 선택</div>
           <div class="emoji-picker-grid" id="emojiPickerGrid"></div>
 
-          <!-- 카테고리 이름 입력 및 추가 -->
           <input type="text" id="newCatNameInput" class="cat-name-input" placeholder="카테고리명 (4~5자 권장)" maxlength="10">
           <button class="btn-create-category" id="createCatBtn">+ 카테고리 생성</button>
 
-          <!-- 등록된 카테고리 2열 목록 -->
           <div style="font-size:12px; font-weight:800; color:var(--text-sub); margin-top:4px;">등록된 카테고리</div>
           <div class="cat-compact-list-2col" id="catCompactList"></div>
         </div>
 
-        <!-- 중앙 본문 (3개 구역 구조) -->
         <div class="detail-main-flow" id="detailMainFlow">
           
-          <!-- 상단 날짜 및 네비게이션 (년/월 제외, 단정한 일자 및 요일만 표시) -->
           <div class="detail-nav-row">
             <button class="nav-arrow-btn" id="prevDayBtn" title="이전 날짜"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="detail-date-badge" id="detailDateDisplay">31일 토요일</div>
+            <div class="detail-date-badge" id="detailDateDisplay">1일 일요일</div>
             <button class="nav-arrow-btn" id="nextDayBtn" title="다음 날짜"><i class="fa-solid fa-chevron-right"></i></button>
           </div>
 
-          <!-- 구역 1: 대표 멘트 카드 (통일된 폰트, 플레이스홀더 제거, 글자수 연동 자동 확장) -->
           <div class="rep-card">
             <div class="rep-left-group">
               <span class="section-unified-title">대표 멘트</span>
@@ -1445,7 +1400,6 @@
             </button>
           </div>
 
-          <!-- 구역 2: 방송 기록 카드 (통일된 타이틀 폰트) -->
           <div class="record-card">
             <div class="record-header-row">
               <div class="section-unified-title">
@@ -1458,10 +1412,8 @@
               </button>
             </div>
 
-            <!-- 새 기록 입력 폼 -->
             <div class="record-form-wrap" id="recordFormWrap">
               <div class="form-top-row">
-                <!-- 커스텀 카테고리 셀렉트 -->
                 <div class="custom-select-box">
                   <div class="select-display-btn" id="selectDisplayBtn">
                     <span id="selectedCatLabel">🥩 TMI</span>
@@ -1481,11 +1433,9 @@
               </div>
             </div>
 
-            <!-- 방송 기록 2열 카드 그리드 -->
             <div class="record-grid-2col" id="recordGridList"></div>
           </div>
 
-          <!-- 구역 3: 하단 치지직 다시보기 카드 (통일된 타이틀 폰트) -->
           <div class="chzzk-link-card">
             <div class="section-unified-title">
               <i class="fa-solid fa-video" style="font-size:13px;"></i>
@@ -1503,10 +1453,8 @@
     </section>
   </main>
 
-  <!-- 저장 완료 토스트 -->
   <div class="toast-pill" id="toastPill">저장되었습니다!</div>
 
-  <!-- 기념일 추가 커스텀 모달 -->
   <div class="anniversary-modal-overlay" id="anniversaryModal">
     <div class="anniversary-modal-box">
       <div class="anniversary-modal-title">
@@ -1527,7 +1475,6 @@
     </div>
   </div>
 
-  <!-- 카테고리 삭제 확인 커스텀 모달 -->
   <div class="confirm-modal-overlay" id="categoryConfirmModal">
     <div class="confirm-modal-box">
       <div class="confirm-modal-title" id="confirmModalText">해당 카테고리를 정말 삭제하시겠습니까?</div>
@@ -1540,12 +1487,13 @@
   </div>
 
   <script>
-    /* 데이터 및 상태 관리 */
-    let currentYear = 2026;
-    let currentMonth = 9; // 0-indexed: 9 = 10월
-    let selectedDateStr = '2026-10-31';
+    /* 실제 접속 날짜 기준으로 실시간 자동 초기화 */
+    const todayInit = new Date();
+    let currentYear = todayInit.getFullYear();
+    let currentMonth = todayInit.getMonth(); // 0-indexed: 11월이면 10
+    let selectedDateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(todayInit.getDate()).padStart(2, '0')}`;
 
-    // 처음에 호평받았던 빨·주·노·초·파·남·보 (연한색, 진한색 쌍) 순서 팔레트
+    /* 6열 24색 무지개 순서 팔레트 */
     const rainbowColors = [
       { name: '연한 빨강', bg: '#f87171', text: '#ffffff' },
       { name: '빨강', bg: '#dc2626', text: '#ffffff' },
@@ -1576,7 +1524,7 @@
       { name: '블랙', bg: '#000000', text: '#ffffff' }
     ];
 
-    // 방송/스트리밍/게임/소통 맞춤 엄선 이모지 목록
+    /* 방송 특화 60종 이모지 세트 */
     const broadcastEmojis = [
       '🎙️', '📻', '📺', '🎬', '🎧', '🎮',
       '🕹️', '⚔️', '🏹', '🛡️', '👾', '🏆',
@@ -1613,12 +1561,11 @@
     let selectedColor = rainbowColors[0];
     let selectedEmoji = broadcastEmojis[0];
     let selectedFormCatId = 'cat_tmi';
-    let editingCategoryId = null; // 수정 중인 카테고리 ID
-    let pendingDeleteCatId = null; // 삭제 확인 대기 중인 카테고리 ID
+    let editingCategoryId = null;
+    let pendingDeleteCatId = null;
     let isTransitioning = false;
-    let pickerViewingYear = 2026;
+    let pickerViewingYear = currentYear;
 
-    /* 로컬 스토리지 연동 */
     function loadStorage() {
       try {
         const storedCat = localStorage.getItem('rutae_cats');
@@ -1642,36 +1589,32 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    /* 캘린더 렌더링 */
     function renderCalendar() {
       const grid = document.getElementById('calendarGrid');
       grid.innerHTML = '';
 
       const monthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
       const detailView = document.getElementById('detailView');
+      const searchBtn = document.getElementById('toggleSearchBtn');
       
-      // 일차별 페이지가 활성화되어 있을 때는 상단 뱃지를 'M월'로 유지하고, 메인 달력일 때만 'YYYY년 M월'로 표시
       if (detailView && detailView.classList.contains('active')) {
         const mNum = parseInt(selectedDateStr.split('-')[1], 10);
         document.getElementById('monthDisplayBtn').textContent = `${mNum}월`;
-        // 일차별 페이지 상태일 때는 월이 바뀌더라도 검색 버튼이 절대 숨겨지지 않고 항상 유지되도록 보장
-        const searchBtn = document.getElementById('toggleSearchBtn');
         if (searchBtn) searchBtn.style.display = 'flex';
       } else {
         document.getElementById('monthDisplayBtn').textContent = `${currentYear}년 ${monthNames[currentMonth]}`;
+        if (searchBtn) searchBtn.style.display = 'none';
       }
 
       const firstDay = new Date(currentYear, currentMonth, 1).getDay();
       const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-      // 이전 달 빈칸
       for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement('div');
         emptyCell.className = 'cal-day-cell empty';
         grid.appendChild(emptyCell);
       }
 
-      // 이번 달 날짜들
       for (let d = 1; d <= lastDate; d++) {
         const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
         const dayOfWeek = new Date(currentYear, currentMonth, d).getDay();
@@ -1681,7 +1624,6 @@
         if (dayOfWeek === 0) cell.classList.add('sunday');
         if (dayOfWeek === 6) cell.classList.add('saturday');
 
-        // 날짜 숫자 표시
         const dayNumSpan = document.createElement('span');
         dayNumSpan.className = 'day-num';
         dayNumSpan.textContent = d;
@@ -1689,7 +1631,7 @@
 
         const dayData = archiveData[dateStr];
 
-        // 1. 기념일 최우선 렌더링 (대표 멘트보다 항상 상단에 먼저 노출)
+        /* 기념일이 대표 멘트보다 최우선 노출 */
         if (dayData && dayData.anniversary && dayData.anniversary.trim()) {
           const annivTile = document.createElement('div');
           annivTile.className = 'anniversary-badge-tile';
@@ -1697,7 +1639,6 @@
           cell.appendChild(annivTile);
         }
 
-        // 2. 해당 일자 저장 데이터(대표 멘트) 렌더링
         if (dayData && dayData.repBadge && dayData.repBadge.trim()) {
           const badgeTile = document.createElement('div');
           badgeTile.className = 'rep-badge-tile';
@@ -1705,7 +1646,6 @@
           cell.appendChild(badgeTile);
         }
 
-        // 1회 클릭 시 선택 강조
         cell.addEventListener('click', (e) => {
           e.stopPropagation();
           document.querySelectorAll('.cal-day-cell').forEach(c => c.classList.remove('selected'));
@@ -1713,7 +1653,6 @@
           selectedDateStr = dateStr;
         });
 
-        // 더블 클릭 시 상세 페이지 진입 (부드러운 줌 전환 효과)
         cell.addEventListener('dblclick', (e) => {
           e.stopPropagation();
           cell.classList.add('zooming');
@@ -1727,11 +1666,9 @@
       }
     }
 
-    /* 대표 멘트 인풋 글자 수에 맞춘 자동 너비 조절 함수 */
     function autoResizeRepInput() {
       const input = document.getElementById('repBadgeInput');
       const val = input.value || '';
-      // 한글/영문 글자 수에 따른 픽셀 계산 (기본 95px, 최대 420px)
       let calcWidth = 95;
       if (val.length > 0) {
         let textLen = 0;
@@ -1743,7 +1680,6 @@
       input.style.width = calcWidth + 'px';
     }
 
-    /* 월 이동 애니메이션 */
     function shiftMonth(dir) {
       if (isTransitioning) return;
       isTransitioning = true;
@@ -1772,31 +1708,24 @@
       }, 160);
     }
 
-    /* 일자별 상세 페이지 진입 */
     function openDayDetail(dateStr) {
       selectedDateStr = dateStr;
       const calView = document.getElementById('calendarView');
       const detailView = document.getElementById('detailView');
 
-      // 일차별 페이지 진입 시 월별 양옆 화살표 버튼 숨김, 중앙 월 뱃지는 유지
       document.getElementById('prevMonthBtn').style.display = 'none';
       document.getElementById('nextMonthBtn').style.display = 'none';
       const monthBtn = document.getElementById('monthDisplayBtn');
       monthBtn.style.display = 'block';
 
-      // 일차별 페이지에서는 햄버거 메뉴 버튼 숨김 및 열린 드롭다운 닫기
       const menuBtn = document.getElementById('toggleMenuBtn');
       if (menuBtn) menuBtn.style.display = 'none';
       const menuDrop = document.getElementById('menuDropdown');
       if (menuDrop) menuDrop.classList.remove('active');
 
-      // 일차별 페이지에서만 돋보기 검색 버튼 표시 (확실하게 노출 보장)
       const searchBtn = document.getElementById('toggleSearchBtn');
-      if (searchBtn) {
-        searchBtn.style.display = 'flex';
-      }
+      if (searchBtn) searchBtn.style.display = 'flex';
 
-      // 진입 즉시 연도를 빼고 해당 날짜의 'M월'만 표시
       const mNum = parseInt(dateStr.split('-')[1], 10);
       monthBtn.textContent = `${mNum}월`;
 
@@ -1826,22 +1755,21 @@
       }, 160);
     }
 
-    /* 일자별 상세 페이지 렌더링 */
     function renderDayDetail() {
       const [y, m, d] = selectedDateStr.split('-').map(Number);
       const dateObj = new Date(y, m - 1, d);
       const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
       
-      // 일차별 페이지에서는 연도를 빼고 'M월'만 상단 헤더 중앙에 확실하게 표시
       const monthBtn = document.getElementById('monthDisplayBtn');
       monthBtn.style.display = 'block';
       monthBtn.textContent = `${m}월`;
 
-      // 일차별 페이지에 머무는 동안에는 돋보기 검색 버튼이 항상 선명하게 유지
       const searchBtn = document.getElementById('toggleSearchBtn');
       if (searchBtn) searchBtn.style.display = 'flex';
 
-      // 상단 헤더에 이미 년/월이 표시되므로 일차별 뱃지는 '31일 토요일' 형식만 출력
+      const menuBtn = document.getElementById('toggleMenuBtn');
+      if (menuBtn) menuBtn.style.display = 'none';
+
       document.getElementById('detailDateDisplay').textContent = `${d}일 ${dayNames[dateObj.getDay()]}`;
 
       if (!archiveData[selectedDateStr]) {
@@ -1849,17 +1777,14 @@
       }
       const dayData = archiveData[selectedDateStr];
 
-      // 대표 멘트 인풋 세팅 및 너비 자동 조절
       const repInput = document.getElementById('repBadgeInput');
       repInput.value = dayData.repBadge || '';
       autoResizeRepInput();
 
-      // 치지직 링크 세팅
       const chzzkInput = document.getElementById('chzzkInput');
       chzzkInput.value = dayData.chzzkLink || '';
       updateChzzkOpenBtn(dayData.chzzkLink);
 
-      // 방송 기록 리스트 렌더링
       renderRecordList();
     }
 
@@ -1876,7 +1801,6 @@
       }
     }
 
-    /* 방송 기록 2열 카드 렌더링 */
     function renderRecordList() {
       const dayData = archiveData[selectedDateStr];
       const records = dayData ? dayData.records || [] : [];
@@ -1920,7 +1844,6 @@
       });
     }
 
-    /* 일자 슬라이드 이동 (마우스/스와이프/방향키 연동) */
     function shiftDay(dir) {
       if (isTransitioning) return;
       isTransitioning = true;
@@ -1936,7 +1859,6 @@
         currentYear = nextDate.getFullYear();
         currentMonth = nextDate.getMonth();
 
-        // 날짜 이동 시에도 연도 없이 'M월'만 유지되도록 보장
         renderDayDetail();
         flow.style.transform = `translateX(${dir > 0 ? '35px' : '-35px'})`;
 
@@ -1948,7 +1870,6 @@
       }, 160);
     }
 
-    /* 기록 삭제 */
     window.deleteRecord = function(id) {
       const dayData = archiveData[selectedDateStr];
       if (!dayData) return;
@@ -1959,9 +1880,7 @@
       showToast('기록이 삭제되었습니다.');
     };
 
-    /* 카테고리 관리 패널 및 셀렉트 박스 */
     function initCategoryManager() {
-      // 1. 색상 선택 팔레트 (레인보우)
       const colorGrid = document.getElementById('rainbowColorGrid');
       colorGrid.innerHTML = '';
       rainbowColors.forEach((c, idx) => {
@@ -1977,7 +1896,6 @@
         colorGrid.appendChild(dot);
       });
 
-      // 2. 이모지 선택 그리드
       const emojiGrid = document.getElementById('emojiPickerGrid');
       emojiGrid.innerHTML = '';
       broadcastEmojis.forEach((em, idx) => {
@@ -1993,7 +1911,6 @@
         emojiGrid.appendChild(btn);
       });
 
-      // 3. 카테고리 생성 버튼
       document.getElementById('createCatBtn').addEventListener('click', () => {
         const nameInput = document.getElementById('newCatNameInput');
         const name = nameInput.value.trim();
@@ -2003,7 +1920,6 @@
         }
 
         if (editingCategoryId) {
-          // 카테고리 수정 모드
           const targetCat = categories.find(c => c.id === editingCategoryId);
           if (targetCat) {
             targetCat.name = name;
@@ -2020,7 +1936,6 @@
           renderRecordList();
           showToast(`'${name}' 카테고리가 수정되었습니다!`);
         } else {
-          // 신규 카테고리 생성 모드
           const newCat = {
             id: 'cat_' + Date.now(),
             name: name,
@@ -2038,7 +1953,6 @@
         }
       });
 
-      // 4. 카테고리 패널 닫기 버튼 (닫힐 때도 부드러운 fadeOut 애니메이션)
       function closeCategoryPanel() {
         const panel = document.getElementById('categorySidePanel');
         if (!panel.classList.contains('active')) return;
@@ -2075,17 +1989,14 @@
           <i class="fa-solid fa-xmark cat-del-btn" title="삭제" onclick="event.stopPropagation(); deleteCategory('${cat.id}')"></i>
         `;
 
-        // 더블클릭 시 해당 카테고리의 색상, 이모지, 이름을 불러와 수정 모드로 전환
         chip.addEventListener('dblclick', (e) => {
           e.stopPropagation();
           editingCategoryId = cat.id;
 
-          // 1. 카테고리명 채우기
           const nameInput = document.getElementById('newCatNameInput');
           nameInput.value = cat.name;
           nameInput.focus();
 
-          // 2. 이모지 선택 활성화
           selectedEmoji = cat.emoji;
           document.querySelectorAll('.emoji-item-btn').forEach(btn => {
             if (btn.textContent.trim() === cat.emoji) {
@@ -2095,7 +2006,6 @@
             }
           });
 
-          // 3. 색상 선택 활성화
           const matchedColor = rainbowColors.find(c => c.bg === cat.bg) || { name: '선택색상', bg: cat.bg, text: cat.text };
           selectedColor = matchedColor;
           document.querySelectorAll('.color-circle-dot').forEach(dot => {
@@ -2106,7 +2016,6 @@
             }
           });
 
-          // 4. 버튼 텍스트 변경
           document.getElementById('createCatBtn').textContent = '✓ 카테고리 수정 완료';
           showToast(`'${cat.name}' 수정 모드: 색상/이모지를 고른 후 완료를 눌러주세요.`);
         });
@@ -2151,7 +2060,6 @@
         optList.appendChild(item);
       });
 
-      // 구분선 및 카테고리 추가하기 버튼
       const divider = document.createElement('div');
       divider.className = 'opt-divider';
       optList.appendChild(divider);
@@ -2165,7 +2073,6 @@
       });
       optList.appendChild(addBtn);
 
-      // 기본 선택 상태 복원
       const current = categories.find(c => c.id === selectedFormCatId) || categories[0];
       if (current) {
         selectedFormCatId = current.id;
@@ -2173,7 +2080,6 @@
       }
     }
 
-    /* 실시간 검색 로직 */
     function initSearch() {
       const toggleBtn = document.getElementById('toggleSearchBtn');
       const boxWrap = document.getElementById('searchBoxWrap');
@@ -2181,12 +2087,10 @@
       const clearBtn = document.getElementById('searchClearBtn');
       const dropdown = document.getElementById('searchDropdown');
 
-      // 검색어 정규식 특수문자 이스케이프 함수
       function escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       }
 
-      // 검색어 하이라이트 처리 함수
       function highlightText(text, keyword) {
         if (!text || !keyword) return escapeHtml(text || '');
         const escapedKeyword = escapeRegExp(keyword);
@@ -2220,25 +2124,28 @@
         const lowerKeyword = keyword.toLowerCase();
         const results = [];
 
-        // 검색 범위를 오직 현재 열려 있는 일차별 페이지의 '방송 기록(상세 내용)'으로만 한정
-        const d = archiveData[selectedDateStr];
-        if (d && d.records && d.records.length > 0) {
-          d.records.forEach(r => {
-            if (r.text && r.text.toLowerCase().includes(lowerKeyword)) {
-              const catObj = categories.find(c => c.id === r.catId);
-              const catName = catObj ? `${catObj.emoji} ${catObj.name}` : '기록';
-              results.push({
-                dateStr: selectedDateStr,
-                categoryTitle: catName,
-                contentHtml: highlightText(r.text, keyword)
-              });
-            }
-          });
-        }
+        /* 모든 날짜의 일차별 상세 기록(내용)을 전수 검색 (대표 멘트, 치지직 링크 제외) */
+        const allDates = Object.keys(archiveData).sort((a, b) => b.localeCompare(a));
+        allDates.forEach(dateKey => {
+          const dayData = archiveData[dateKey];
+          if (dayData && dayData.records && dayData.records.length > 0) {
+            dayData.records.forEach(r => {
+              if (r.text && r.text.toLowerCase().includes(lowerKeyword)) {
+                const catObj = categories.find(c => c.id === r.catId);
+                const catName = catObj ? `${catObj.emoji} ${catObj.name}` : '기록';
+                results.push({
+                  dateStr: dateKey,
+                  categoryTitle: catName,
+                  contentHtml: highlightText(r.text, keyword)
+                });
+              }
+            });
+          }
+        });
 
         dropdown.innerHTML = '';
         if (results.length === 0) {
-          dropdown.innerHTML = `<div style="padding:12px; text-align:center; color:#9ca3af; font-size:12.5px; font-weight:700;">현재 날짜에서 '${escapeHtml(keyword)}' 검색 결과가 없습니다.</div>`;
+          dropdown.innerHTML = `<div style="padding:12px; text-align:center; color:#9ca3af; font-size:12.5px; font-weight:700;">'${escapeHtml(keyword)}' 검색 결과가 없습니다.</div>`;
         } else {
           results.forEach(res => {
             const item = document.createElement('div');
@@ -2253,6 +2160,7 @@
             item.addEventListener('click', () => {
               boxWrap.classList.remove('active');
               dropdown.classList.remove('active');
+              openDayDetail(res.dateStr);
             });
             dropdown.appendChild(item);
           });
@@ -2260,7 +2168,6 @@
         dropdown.classList.add('active');
       });
 
-      // 바깥 영역 클릭 시 닫기
       document.addEventListener('click', (e) => {
         if (!boxWrap.contains(e.target) && !dropdown.contains(e.target) && e.target !== toggleBtn) {
           boxWrap.classList.remove('active');
@@ -2269,7 +2176,6 @@
       });
     }
 
-    /* 년/월 빠른 선택 피커 로직 */
     function initYearMonthPicker() {
       const pillBtn = document.getElementById('monthDisplayBtn');
       const pickerPop = document.getElementById('yearMonthPickerPop');
@@ -2301,7 +2207,6 @@
 
       function startLongPress(e) {
         const calView = document.getElementById('calendarView');
-        // 일차별 페이지에서는 롱프레스 동작 안 함
         if (!calView.classList.contains('active')) return;
 
         isLongPressTriggered = false;
@@ -2311,14 +2216,13 @@
           pickerViewingYear = currentYear;
           renderPickerMonths();
           pickerPop.classList.add('active');
-        }, 1000); // 1초 이상 길게 누를 때만 팝업 실행
+        }, 1000);
       }
 
       function cancelLongPress() {
         clearTimeout(pressTimer);
       }
 
-      // 마우스 및 터치 롱프레스 이벤트 연결 (월별 페이지에서만 1초 감지)
       pillBtn.addEventListener('mousedown', startLongPress);
       pillBtn.addEventListener('touchstart', startLongPress, { passive: true });
 
@@ -2327,7 +2231,6 @@
       pillBtn.addEventListener('touchend', cancelLongPress);
       pillBtn.addEventListener('touchcancel', cancelLongPress);
 
-      // 클릭 시: 일차별 페이지일 때 메인 달력으로만 복귀, 롱프레스 후 튀는 클릭 방지
       pillBtn.addEventListener('click', (e) => {
         if (isLongPressTriggered) {
           isLongPressTriggered = false;
@@ -2336,7 +2239,6 @@
 
         const calView = document.getElementById('calendarView');
         if (!calView.classList.contains('active')) {
-          // 일차별 페이지에 머무는 중이라면 메인 달력으로 즉시 복귀
           document.getElementById('detailView').classList.remove('active');
           calView.classList.add('active');
           document.getElementById('prevMonthBtn').style.display = 'flex';
@@ -2365,7 +2267,6 @@
         renderPickerMonths();
       });
 
-      // 바깥 클릭 시 닫기
       document.addEventListener('click', (e) => {
         if (!pickerPop.contains(e.target) && e.target !== pillBtn) {
           pickerPop.classList.remove('active');
@@ -2373,7 +2274,6 @@
       });
     }
 
-    /* 초기화 및 이벤트 연결 */
     window.addEventListener('DOMContentLoaded', () => {
       loadStorage();
       renderCalendar();
@@ -2382,7 +2282,6 @@
       initYearMonthPicker();
       initHamburgerMenu();
 
-      // 헤더 브랜드를 누르면 메인 달력 복귀
       const backToCalendar = () => {
         document.getElementById('detailView').classList.remove('active');
         document.getElementById('calendarView').classList.add('active');
@@ -2402,19 +2301,15 @@
       };
       document.getElementById('brandHomeBtn').addEventListener('click', backToCalendar);
 
-      // 월 이동 버튼
       document.getElementById('prevMonthBtn').addEventListener('click', () => shiftMonth(-1));
       document.getElementById('nextMonthBtn').addEventListener('click', () => shiftMonth(1));
 
-      // 일자 이동 버튼
       document.getElementById('prevDayBtn').addEventListener('click', () => shiftDay(-1));
       document.getElementById('nextDayBtn').addEventListener('click', () => shiftDay(1));
 
-      // 대표 멘트 입력 시 글자수에 따른 실시간 너비 조절
       const repBadgeInput = document.getElementById('repBadgeInput');
       repBadgeInput.addEventListener('input', autoResizeRepInput);
 
-      // 대표 멘트 저장 버튼
       document.getElementById('saveRepBadgeBtn').addEventListener('click', () => {
         const val = repBadgeInput.value.trim();
         if (!archiveData[selectedDateStr]) {
@@ -2426,7 +2321,6 @@
         showToast('대표 멘트가 저장되었습니다!');
       });
 
-      // 치지직 링크 실시간 반영
       document.getElementById('chzzkInput').addEventListener('input', (e) => {
         const url = e.target.value.trim();
         if (!archiveData[selectedDateStr]) {
@@ -2437,7 +2331,6 @@
         saveStorage();
       });
 
-      // 내용 추가 폼 열기/닫기
       const formWrap = document.getElementById('recordFormWrap');
       document.getElementById('toggleAddContentBtn').addEventListener('click', () => {
         formWrap.classList.toggle('active');
@@ -2449,7 +2342,6 @@
         formWrap.classList.remove('active');
       });
 
-      // 새 방송 기록 제출
       document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
         const text = document.getElementById('recordTextInput').value.trim();
         const link = document.getElementById('recordLinkInput').value.trim();
@@ -2478,7 +2370,6 @@
         showToast('방송 기록이 등록되었습니다!');
       });
 
-      // 셀렉트 드롭다운 토글
       const selectBtn = document.getElementById('selectDisplayBtn');
       const optList = document.getElementById('selectOptionsList');
       selectBtn.addEventListener('click', (e) => {
@@ -2489,10 +2380,8 @@
         if (!selectBtn.contains(e.target)) optList.classList.remove('active');
       });
 
-      // 마우스 드래그 & 모바일 터치 스와이프 날짜 이동
       initSwipeNavigation();
 
-      // 카테고리 삭제 모달 버튼 이벤트
       document.getElementById('confirmCancelBtn').addEventListener('click', () => {
         document.getElementById('categoryConfirmModal').classList.remove('active');
         pendingDeleteCatId = null;
@@ -2516,7 +2405,6 @@
       });
     });
 
-    /* 햄버거 메뉴 로직: 공유하기, 캘린더 저장하기, 기념일 추가하기 */
     function initHamburgerMenu() {
       const menuBtn = document.getElementById('toggleMenuBtn');
       const menuDropdown = document.getElementById('menuDropdown');
@@ -2529,7 +2417,6 @@
         menuDropdown.classList.toggle('active');
       });
 
-      // 1. 공유하기 (현재 URL 복사)
       document.getElementById('menuShareBtn').addEventListener('click', () => {
         menuDropdown.classList.remove('active');
         const dummy = document.createElement('input');
@@ -2541,7 +2428,6 @@
         showToast('캘린더 링크가 클립보드에 복사되었습니다!');
       });
 
-      // 2. 캘린더 저장하기 (상단 도트 배너 + 년월 중앙 배치 + 캘린더 그리드 고화질 JPG 저장)
       document.getElementById('menuExportBtn').addEventListener('click', () => {
         menuDropdown.classList.remove('active');
         
@@ -2549,7 +2435,6 @@
           const exportCanvas = document.createElement('canvas');
           const ctx = exportCanvas.getContext('2d');
 
-          // 고해상도 2x 렌더링
           const scale = 2;
           const canvasWidth = 1040;
           const bannerHeight = 84;
@@ -2558,7 +2443,6 @@
           const paddingX = (canvasWidth - (cellWidth * 7)) / 2;
           const weekdayHeight = 44;
 
-          // 이번 달 날짜 계산
           const firstDay = new Date(currentYear, currentMonth, 1).getDay();
           const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
           const totalDays = firstDay + lastDate;
@@ -2570,15 +2454,12 @@
           exportCanvas.height = canvasHeight * scale;
           ctx.scale(scale, scale);
 
-          // 전체 배경 (웹앱과 동일한 부드러운 크림 민트 #f4fbf7)
           ctx.fillStyle = '#f4fbf7';
           ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-          // 1. 상단 배너 베이스 (#38a169)
           ctx.fillStyle = '#38a169';
           ctx.fillRect(0, 0, canvasWidth, bannerHeight);
 
-          // 실제 CSS 헤더의 세련된 240px 주기 불규칙 도트 패턴을 Canvas로 100% 동일하게 구현
           const dotPatternDefs = [
             { xRatio: 0.12, yRatio: 0.28, r: 4.5, alpha: 0.95 },
             { xRatio: 0.26, yRatio: 0.75, r: 3.0, alpha: 0.85 },
@@ -2608,11 +2489,9 @@
             });
           }
 
-          // 배너 하단 경계선 (#2f855a, 2px)
           ctx.fillStyle = '#2f855a';
           ctx.fillRect(0, bannerHeight - 2, canvasWidth, 2);
 
-          // 상단 중앙 년/월 배지 (웹앱과 동일한 입체감과 폰트)
           const badgeW = 160;
           const badgeH = 38;
           const badgeX = (canvasWidth - badgeW) / 2;
@@ -2627,13 +2506,11 @@
           ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 19);
           ctx.fill();
 
-          // 배지 테두리 (#c8e6c9)
           ctx.strokeStyle = '#c8e6c9';
           ctx.lineWidth = 1.5;
           ctx.stroke();
           ctx.restore();
 
-          // 년/월 텍스트
           ctx.fillStyle = '#1b5e20';
           ctx.font = '900 15px Pretendard, -apple-system, sans-serif';
           ctx.textAlign = 'center';
@@ -2641,7 +2518,6 @@
           const monthText = `${currentYear}년 ${currentMonth + 1}월`;
           ctx.fillText(monthText, canvasWidth / 2, bannerHeight / 2);
 
-          // 2. 요일 행 (웹앱 디자인과 동일: 일~토)
           const startY = bannerHeight + 20;
           const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
           ctx.font = '900 13.5px Pretendard, -apple-system, sans-serif';
@@ -2655,7 +2531,6 @@
             ctx.fillText(weekdays[i], x, startY + 12);
           }
 
-          // 요일 하단 구분선
           ctx.strokeStyle = '#e5e7eb';
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -2663,7 +2538,6 @@
           ctx.lineTo(paddingX + (cellWidth * 7), startY + 28);
           ctx.stroke();
 
-          // 3. 달력 셀 & 내용 그리기 (웹앱 cal-day-cell 과 100% 동일한 톤과 곡률)
           const gridStartY = startY + 38;
 
           for (let cellIdx = 0; cellIdx < totalWeeks * 7; cellIdx++) {
@@ -2677,18 +2551,15 @@
               const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
               const dayData = archiveData[dateStr];
 
-              // 셀 배경 (#fafdfb)
               ctx.fillStyle = '#fafdfb';
               ctx.beginPath();
               ctx.roundRect(cx + 4, cy + 4, cellWidth - 8, cellHeight - 8, 14);
               ctx.fill();
 
-              // 셀 테두리 (#e1ece5)
               ctx.strokeStyle = '#e1ece5';
               ctx.lineWidth = 1.5;
               ctx.stroke();
 
-              // 날짜 숫자
               ctx.textAlign = 'left';
               ctx.textBaseline = 'top';
               ctx.font = '900 13.5px Pretendard, -apple-system, sans-serif';
@@ -2699,7 +2570,7 @@
 
               let itemOffsetY = cy + 34;
 
-              // 1. 기념일 배지 최우선 렌더링 (Canvas 저장 시에도 대표 멘트보다 최상단)
+              /* 기념일 배지 우선 그리기 */
               if (dayData && dayData.anniversary && dayData.anniversary.trim()) {
                 const annivBoxW = cellWidth - 24;
                 const annivBoxH = 22;
@@ -2721,7 +2592,7 @@
                 itemOffsetY += annivBoxH + 4;
               }
 
-              // 2. 대표 멘트 배지 렌더링
+              /* 대표 멘트 그리기 */
               if (dayData && dayData.repBadge && dayData.repBadge.trim()) {
                 const badgeBoxW = cellWidth - 24;
                 const badgeBoxH = 34;
@@ -2751,7 +2622,6 @@
             }
           }
 
-          // 고화질 JPG 다운로드 실행
           const jpgDataUrl = exportCanvas.toDataURL('image/jpeg', 0.95);
           const downloadLink = document.createElement('a');
           downloadLink.href = jpgDataUrl;
@@ -2767,7 +2637,6 @@
         }
       });
 
-      // 3. 기념일 추가하기 (모달창 열기)
       document.getElementById('menuAddAnnivBtn').addEventListener('click', () => {
         menuDropdown.classList.remove('active');
         const todayStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-01`;
@@ -2803,7 +2672,6 @@
         showToast(`🎉 '${title}' 기념일이 달력에 추가되었습니다!`);
       });
 
-      // 바깥 클릭 시 메뉴 닫기
       document.addEventListener('click', (e) => {
         if (!menuDropdown.contains(e.target) && e.target !== menuBtn) {
           menuDropdown.classList.remove('active');
@@ -2811,7 +2679,6 @@
       });
     }
 
-    /* 스와이프 네비게이션: 화면 전체 빈 공간 어디서나 자유롭게 드래그/스와이프 감지 */
     function initSwipeNavigation() {
       let startX = 0;
       let startY = 0;
@@ -2823,8 +2690,6 @@
       const detailView = document.getElementById('detailView');
       const calView = document.getElementById('calendarView');
 
-      // 1. 일자별 상세 페이지 제스처 (일자 이동)
-      // 중앙 메인 카드 영역(detailMainFlow) 및 카테고리 팝업(categorySidePanel) 내부 상호작용은 제외하고 좌우 빈 공간에서만 감지
       document.addEventListener('touchstart', (e) => {
         if (!detailView.classList.contains('active')) return;
         if (e.target.closest('#detailMainFlow') || e.target.closest('#categorySidePanel') || e.target.closest('header')) return;
@@ -2861,7 +2726,6 @@
         }
       });
 
-      // 2. 메인 캘린더 화면 제스처: 달력 내부 셀뿐만 아니라 달력 밖 화면 전체 빈공간 어디서나 스와이프 동작
       document.addEventListener('touchstart', (e) => {
         if (!calView.classList.contains('active')) return;
         if (['INPUT', 'BUTTON'].includes(e.target.tagName) || e.target.closest('header')) return;
@@ -2898,7 +2762,6 @@
         }
       });
 
-      // 키보드 화살표 키 (← / →)
       window.addEventListener('keydown', (e) => {
         if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
         if (detailView.classList.contains('active')) {
@@ -2911,7 +2774,6 @@
       });
     }
 
-    /* 유틸리티 함수 */
     function escapeHtml(str) {
       if (!str) return '';
       return String(str)
