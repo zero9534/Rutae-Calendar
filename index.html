@@ -1490,7 +1490,7 @@
     };
     firebase.initializeApp(firebaseConfig);
     const dataRef = firebase.database().ref('calendar_archive_shared');
-  dataRef.on('value', (snapshot) => {
+dataRef.on('value', (snapshot) => {
       const val = snapshot.val();
       if (val) {
         if (val.categories && Array.isArray(val.categories) && val.categories.length > 0) {
@@ -1518,11 +1518,9 @@
       if (typeof renderRecordList === 'function') {
         renderRecordList();
       }
-      if (typeof openDetailView === 'function' && typeof selectedDateStr !== 'undefined' && selectedDateStr) {
-        const detailView = document.getElementById('detailView');
-        if (detailView && detailView.classList.contains('active')) {
-          renderDayDetail();
-        }
+      const detailView = document.getElementById('detailView');
+      if (detailView && detailView.classList.contains('active')) {
+        if (typeof renderDayDetail === 'function') renderDayDetail();
       }
     });
 
@@ -1873,6 +1871,9 @@
       chzzkInput.value = dayData.chzzkLink || '';
       updateChzzkOpenBtn(dayData.chzzkLink);
 
+      renderCompactCatList();
+      renderCustomSelectOptions();
+
       renderRecordList();
     }
 
@@ -2114,9 +2115,6 @@ window.editRecord = function(id) {
       }
 
       document.getElementById('closeCatPanelBtn').addEventListener('click', closeCategoryPanel);
-
-      renderCompactCatList();
-      renderCustomSelectOptions();
     }
 
     function renderCompactCatList() {
