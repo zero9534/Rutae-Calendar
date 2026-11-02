@@ -2462,6 +2462,21 @@ window.editRecord = function(id) {
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      // 개구리 파비콘 캐시 무시 강제 렌더링
+      const canvas = document.createElement('canvas');
+      canvas.width = 32;
+      canvas.height = 32;
+      const ctx = canvas.getContext('2d');
+      ctx.font = '26px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🐸', 16, 18);
+      const iconLink = document.getElementById('dynamicFavicon') || document.createElement('link');
+      iconLink.type = 'image/png';
+      iconLink.rel = 'icon';
+      iconLink.href = canvas.toDataURL('image/png');
+      document.head.appendChild(iconLink);
+      
       loadStorage();
       renderCalendar();
       initCategoryManager();
