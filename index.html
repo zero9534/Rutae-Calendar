@@ -252,7 +252,7 @@
       border-radius: 4px;
     }
 
-    /* 검색창 */
+/* 검색창 */
     .search-box-wrap {
       display: none;
       align-items: center;
@@ -261,9 +261,51 @@
       padding: 4px 12px;
       border: 2px solid var(--deep-green);
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      animation: expandSearch 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      z-index: 150;
     }
     .search-box-wrap.active {
+      display: flex;
+    }
+    .search-box-wrap input {
+      border: none;
+      outline: none;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      width: 170px;
+      background: transparent;
+    }
+    .search-clear-btn {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 2px 4px;
+    }
+    .search-clear-btn:hover {
+      color: #ef4444;
+    }
+
+    /* 검색 결과창 */
+    .search-dropdown {
+      position: absolute;
+      top: 48px;
+      right: 0;
+      width: 320px;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1.5px solid var(--border-color);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+      max-height: 360px;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+      z-index: 200;
+      padding: 6px;
+    }
+    .search-dropdown.active {
       display: flex;
     }
     .search-box-wrap input {
@@ -2303,6 +2345,7 @@ window.editRecord = function(id) {
             item.addEventListener('click', () => {
               boxWrap.classList.remove('active');
               dropdown.classList.remove('active');
+              selectedDateStr = res.dateStr;
               openDayDetail(res.dateStr);
             });
             dropdown.appendChild(item);
