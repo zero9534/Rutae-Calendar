@@ -1965,16 +1965,31 @@ window.editRecord = function(id) {
   if (!target) return;
 
   editingRecordId = id;
-  document.getElementById('recordTextInput').value = target.text || '';
-  document.getElementById('recordLinkInput').value = target.link || '';
   
-  if (target.catId && typeof selectFormCategory === 'function') {
-    selectFormCategory(target.catId);
+  const textInput = document.getElementById('recordTextInput');
+  const linkInput = document.getElementById('recordLinkInput');
+  const submitBtn = document.getElementById('submitAddRecordBtn');
+  const formWrapEl = document.querySelector('.record-form-wrap') || document.getElementById('recordFormWrap');
+
+  if (textInput) textInput.value = target.text || '';
+  if (linkInput) linkInput.value = target.link || '';
+  if (submitBtn) submitBtn.textContent = '수정 완료';
+
+  if (target.catId) {
+    if (typeof selectedFormCatId !== 'undefined') selectedFormCatId = target.catId;
+    if (typeof selectFormCategory === 'function') selectFormCategory(target.catId);
   }
 
-  document.getElementById('submitAddRecordBtn').textContent = '수정 완료';
-  formWrap.classList.add('active');
-  document.getElementById('recordTextInput').focus();
+  if (formWrapEl) {
+    formWrapEl.classList.add('active');
+  } else if (typeof formWrap !== 'undefined' && formWrap) {
+    formWrap.classList.add('active');
+  }
+
+  if (textInput) {
+    textInput.focus();
+    textInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 };
 
     function initCategoryManager() {
