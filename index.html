@@ -1964,17 +1964,17 @@ window.editRecord = function(id) {
   const target = dayData.records.find(r => r.id === id);
   if (!target) return;
 
-  const newText = prompt("수정할 방송 기록 내용을 입력하세요:", target.text);
-  if (newText === null) return;
-  if (newText.trim() === "") {
-    alert("내용을 입력해주세요.");
-    return;
+  editingRecordId = id;
+  document.getElementById('recordTextInput').value = target.text || '';
+  document.getElementById('recordLinkInput').value = target.link || '';
+  
+  if (target.catId && typeof selectFormCategory === 'function') {
+    selectFormCategory(target.catId);
   }
 
-  target.text = newText.trim();
-  saveStorage();
-  if (typeof renderDayDetail === 'function') renderDayDetail();
-  if (typeof renderCalendar === 'function') renderCalendar();
+  document.getElementById('submitAddRecordBtn').textContent = '수정 완료';
+  formWrap.classList.add('active');
+  document.getElementById('recordTextInput').focus();
 };
 
     function initCategoryManager() {
@@ -2439,33 +2439,61 @@ window.editRecord = function(id) {
         formWrap.classList.remove('active');
       });
 
-      document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
-        const text = document.getElementById('recordTextInput').value.trim();
-        const link = document.getElementById('recordLinkInput').value.trim();
-        if (!text) {
-          alert('내용을 입력해주세요!');
-          return;
-        }
+let editingRecordId = null; // 
 
-        if (!archiveData[selectedDateStr]) {
-          archiveData[selectedDateStr] = { repBadge: '', chzzkLink: '', records: [] };
-        }
+document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
+  const text = document.getElementById('recordTextInput').value.trim();
+  const link = document.getElementById('recordLinkInput').value.trim();
+  if (!text) {
+    alert('내용을 입력해주세요!');
+    return;
+  }
 
-        archiveData[selectedDateStr].records.unshift({
-          id: 'rec_' + Date.now(),
-          catId: selectedFormCatId,
-          text,
-          link
-        });
+  if (!archiveData[selectedDateStr]) {
+    archiveData[selectedDateStr] = { repBadge: '', chzzkLink: '', records: [] };
+  }
 
-        saveStorage();
-        document.getElementById('recordTextInput').value = '';
-        document.getElementById('recordLinkInput').value = '';
-        formWrap.classList.remove('active');
-        renderRecordList();
-        renderCalendar();
-        showToast('방송 기록이 등록되었습니다!');
-      });
+  if (editingRecordId) {
+    // [수정 모드] 기존 기록 업데이트
+    const target = archiveData[selectedDateStr].records.find(r => r.id === editingRecordId);
+    if (target) {
+      target.text = text;
+      target.link = link;
+      if (typeof selectedFormCatId !== 'undefined' && selectedFormCatId) {
+        target.catId = selectedFormCatId;
+      }
+    }
+    editingRecordId = null;
+    showToast('방송 기록이 수정되었습니다!');
+  } else {
+    // [새 등록 모드] 신규 추가
+    archiveData[selectedDateStr].records.unshift({
+      id: 'rec_' + Date.now(),
+      catId: selectedFormCatId,
+      text,
+      link
+    });
+    showToast('방송 기록이 등록되었습니다!');
+  }
+
+  saveStorage();
+  document.getElementById('recordTextInput').value = '';
+  document.getElementById('recordLinkInput').value = '';
+  document.getElementById('submitAddRecordBtn').textContent = '등록';
+  formWrap.classList.remove('active');
+  if (typeof renderRecordList === 'function') renderRecordList();
+  if (typeof renderDayDetail === 'function') renderDayDetail();
+  if (typeof renderCalendar === 'function') renderCalendar();
+});
+
+// 취소 버튼 누르면 수정 모드 초기화
+const cancelBtn = document.getElementById('cancelAddRecordBtn');
+if (cancelBtn) {
+  cancelBtn.addEventListener('click', () => {
+    editingRecordId = null;
+    document.getElementById('submitAddRecordBtn').textContent = '등록';
+  });
+}
 
       const selectBtn = document.getElementById('selectDisplayBtn');
       const optList = document.getElementById('selectOptionsList');
