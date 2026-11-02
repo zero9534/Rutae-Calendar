@@ -2160,16 +2160,16 @@ window.editRecord = function(id) {
 
 document.getElementById('closeCatPanelBtn').addEventListener('click', closeCategoryPanel);
 
-      // 바깥 영역 클릭 시 카테고리 패널 자동 닫기
-      document.addEventListener('click', (e) => {
+// 바깥 영역 클릭 시 카테고리 패널 자동 닫기 (이벤트 충돌 방지 버전)
+      document.addEventListener('pointerdown', (e) => {
         const panel = document.getElementById('categorySidePanel');
         if (!panel || !panel.classList.contains('active')) return;
 
-        // 패널 안쪽을 눌렀거나, 버튼/아이콘 등을 눌러서 열린 순간이면 무시
+        // 패널 안쪽을 눌렀으면 닫지 않음
         if (panel.contains(e.target)) return;
 
-        // 카테고리 열기 버튼을 클릭한 순간 바로 닫히는 것 방지 (버튼 텍스트나 카테고리 관련 버튼 감지)
-        if (e.target.closest('button') && e.target.closest('button').textContent.includes('카테고리')) return;
+        // 패널을 열 때 누른 버튼이나 요소는 제외 (열리자마자 닫히는 현상 차단)
+        if (e.target.closest('#openCatPanelBtn') || e.target.closest('[id*="Cat"]') || e.target.closest('[class*="cat"]')) return;
 
         closeCategoryPanel();
       });
