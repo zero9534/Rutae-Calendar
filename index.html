@@ -1948,34 +1948,38 @@
 let pendingDeleteRecordId = null;
 
 window.deleteRecord = function(id) {
+  pendingDeleteCatId = null;
   pendingDeleteRecordId = id;
   const modal = document.getElementById('categoryConfirmModal');
   if (modal) {
-    // 모달 안의 모든 제목/설명 영역 텍스트를 방송 기록 삭제 문구로 교체
-    const titleEl = modal.querySelector('h3') || modal.querySelector('.modal-title') || modal.querySelector('div:first-child');
-    const descEl = modal.querySelector('p') || modal.querySelector('.modal-desc');
-    
+    const titleEl = modal.querySelector('h3') || modal.querySelector('.modal-title') || modal.querySelector('strong') || modal.querySelector('p');
+    const descEl = modal.querySelector('.modal-desc') || modal.querySelectorAll('p')[1];
     if (titleEl) titleEl.innerHTML = '이 방송 기록을 정말 삭제하시겠습니까?';
     if (descEl) descEl.textContent = '삭제 후에는 복구할 수 없습니다.';
-    
     modal.classList.add('active');
   } else {
-    if (confirm("정말 이 방송 기록을 삭제하시겠습니까?")) {
+    if (confirm("이 방송 기록을 정말 삭제하시겠습니까?")) {
       executeDeleteRecord(id);
     }
   }
 };
 
 function executeDeleteRecord(id) {
-  const dayData = archiveData[selectedDateStr];
-  if (dayData && dayData.records) {
-    dayData.records = dayData.records.filter(r => r.id !== id);
-    saveStorage();
-    if (typeof renderRecordList === 'function') renderRecordList();
-    if (typeof renderDayDetail === 'function') renderDayDetail();
-    if (typeof renderCalendar === 'function') renderCalendar();
-    if (typeof showToast === 'function') showToast('기록이 삭제되었습니다!');
-  }
+  const activeDate = (typeof selectedDateStr !== 'undefined' && selectedDateStr) 
+                  || (typeof currentSelectedDate !== 'undefined' && currentSelectedDate)
+                  || (typeof selectedDate !== 'undefined' && selectedDate);
+
+  if (!activeDate || !archiveData[activeDate] || !archiveData[activeDate].records) return;
+
+  archiveData[activeDate].records = archiveData[activeDate].records.filter(r => r.id !== id);
+
+  if (typeof saveStorage === 'function') saveStorage();
+  if (typeof saveData === 'function') saveData();
+
+  if (typeof renderRecordList === 'function') renderRecordList();
+  if (typeof renderDayDetail === 'function') renderDayDetail();
+  if (typeof renderCalendar === 'function') renderCalendar();
+  if (typeof showToast === 'function') showToast('기록이 삭제되었습니다!');
 }
 
 window.editRecord = function(id) {
@@ -2528,22 +2532,14 @@ document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
 
       initSwipeNavigation();
 
-      document.getElementById('confirmCancelBtn').addEventListener('click', () => {
-        document.getElementById('categoryConfirmModal').classList.remove('active');
-        pendingDeleteCatId = null;
-      });
+document.getElementById('confirmCancelBtn').addEventListener('click', () => {
+  document.getElementById('categoryConfirmModal').classList.remove('active');
+  pendingDeleteCatId = null;
+  pendingDeleteRecordId = null;
+});
 
 document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-    // 1. 방송 기록 삭제인 경우
-    if (typeof pendingDeleteRecordId !== 'undefined' && pendingDeleteRecordId) {
-      executeDeleteRecord(pendingDeleteRecordId);
-      pendingDeleteRecordId = null;
-      document.getElementById('categoryConfirmModal').classList.remove('active');
-      return;
-    }
-
-    // 2. 카테고리 삭제인 경우 (기존 동작 유지)
-    if (!pendingDeleteCatId) return;
+  if (pendingDeleteCatId) {
     categories = categories.filter(c => c.id !== pendingDeleteCatId);
     if (editingCategoryId === pendingDeleteCatId) {
       editingCategoryId = null;
@@ -2556,10 +2552,19 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
     renderRecordList();
     document.getElementById('categoryConfirmModal').classList.remove('active');
     pendingDeleteCatId = null;
+    pendingDeleteRecordId = null;
     showToast('카테고리가 삭제되었습니다.');
-  });
-  });
+    return;
+  }
 
+  if (typeof pendingDeleteRecordId !== 'undefined' && pendingDeleteRecordId) {
+    executeDeleteRecord(pendingDeleteRecordId);
+    pendingDeleteRecordId = null;
+    pendingDeleteCatId = null;
+    document.getElementById('categoryConfirmModal').classList.remove('active');
+    return;
+  }
+});
     function initHamburgerMenu() {
       const menuBtn = document.getElementById('toggleMenuBtn');
       const menuDropdown = document.getElementById('menuDropdown');
