@@ -1951,8 +1951,13 @@ window.deleteRecord = function(id) {
   pendingDeleteRecordId = id;
   const modal = document.getElementById('categoryConfirmModal');
   if (modal) {
-    const desc = modal.querySelector('p') || modal.querySelector('.modal-desc');
-    if (desc) desc.textContent = "정말 이 방송 기록을 삭제하시겠습니까?";
+    // 모달 안의 모든 제목/설명 영역 텍스트를 방송 기록 삭제 문구로 교체
+    const titleEl = modal.querySelector('h3') || modal.querySelector('.modal-title') || modal.querySelector('div:first-child');
+    const descEl = modal.querySelector('p') || modal.querySelector('.modal-desc');
+    
+    if (titleEl) titleEl.innerHTML = '이 방송 기록을 정말 삭제하시겠습니까?';
+    if (descEl) descEl.textContent = '삭제 후에는 복구할 수 없습니다.';
+    
     modal.classList.add('active');
   } else {
     if (confirm("정말 이 방송 기록을 삭제하시겠습니까?")) {
