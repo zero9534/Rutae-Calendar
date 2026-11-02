@@ -1951,11 +1951,9 @@ window.deleteRecord = function(id) {
   pendingDeleteCatId = null;
   pendingDeleteRecordId = id;
   const modal = document.getElementById('categoryConfirmModal');
+  const titleEl = document.getElementById('confirmModalText');
   if (modal) {
-    const titleEl = modal.querySelector('h3') || modal.querySelector('.modal-title') || modal.querySelector('strong') || modal.querySelector('p');
-    const descEl = modal.querySelector('.modal-desc') || modal.querySelectorAll('p')[1];
-    if (titleEl) titleEl.innerHTML = '이 방송 기록을 정말 삭제하시겠습니까?';
-    if (descEl) descEl.textContent = '삭제 후에는 복구할 수 없습니다.';
+    if (titleEl) titleEl.textContent = '이 방송 기록을 정말 삭제하시겠습니까?';
     modal.classList.add('active');
   } else {
     if (confirm("이 방송 기록을 정말 삭제하시겠습니까?")) {
@@ -2533,39 +2531,40 @@ document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
       initSwipeNavigation();
 
 document.getElementById('confirmCancelBtn').addEventListener('click', () => {
-  document.getElementById('categoryConfirmModal').classList.remove('active');
-  pendingDeleteCatId = null;
-  pendingDeleteRecordId = null;
-});
+        document.getElementById('categoryConfirmModal').classList.remove('active');
+        pendingDeleteCatId = null;
+        pendingDeleteRecordId = null;
+      });
 
-document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-  if (pendingDeleteCatId) {
-    categories = categories.filter(c => c.id !== pendingDeleteCatId);
-    if (editingCategoryId === pendingDeleteCatId) {
-      editingCategoryId = null;
-      document.getElementById('newCatNameInput').value = '';
-      document.getElementById('createCatBtn').textContent = '+ 카테고리 생성';
-    }
-    saveStorage();
-    renderCompactCatList();
-    renderCustomSelectOptions();
-    renderRecordList();
-    document.getElementById('categoryConfirmModal').classList.remove('active');
-    pendingDeleteCatId = null;
-    pendingDeleteRecordId = null;
-    showToast('카테고리가 삭제되었습니다.');
-    return;
-  }
+      document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+        if (pendingDeleteCatId) {
+          categories = categories.filter(c => c.id !== pendingDeleteCatId);
+          if (editingCategoryId === pendingDeleteCatId) {
+            editingCategoryId = null;
+            document.getElementById('newCatNameInput').value = '';
+            document.getElementById('createCatBtn').textContent = '+ 카테고리 생성';
+          }
+          saveStorage();
+          renderCompactCatList();
+          renderCustomSelectOptions();
+          renderRecordList();
+          document.getElementById('categoryConfirmModal').classList.remove('active');
+          pendingDeleteCatId = null;
+          pendingDeleteRecordId = null;
+          showToast('카테고리가 삭제되었습니다.');
+          return;
+        }
 
-  if (typeof pendingDeleteRecordId !== 'undefined' && pendingDeleteRecordId) {
-    executeDeleteRecord(pendingDeleteRecordId);
-    pendingDeleteRecordId = null;
-    pendingDeleteCatId = null;
-    document.getElementById('categoryConfirmModal').classList.remove('active');
-    return;
-  }
-});
-});
+        if (pendingDeleteRecordId) {
+          executeDeleteRecord(pendingDeleteRecordId);
+          pendingDeleteRecordId = null;
+          pendingDeleteCatId = null;
+          document.getElementById('categoryConfirmModal').classList.remove('active');
+          return;
+        }
+      });
+    });
+
     function initHamburgerMenu() {
       const menuBtn = document.getElementById('toggleMenuBtn');
       const menuDropdown = document.getElementById('menuDropdown');
