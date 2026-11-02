@@ -1573,41 +1573,41 @@ dataRef.on('value', (snapshot) => {
     let currentMonth = todayInit.getMonth(); // 0-indexed: 11월이면 10
     let selectedDateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(todayInit.getDate()).padStart(2, '0')}`;
 
-    /* 6열 24색 무지개 순서 팔레트 */
+/* 6열 24색 무지개 순서 팔레트 (연하고 은은한 배경) */
     const rainbowColors = [
-      { name: '연한 빨강', bg: '#f87171', text: '#ffffff' },
-      { name: '빨강', bg: '#dc2626', text: '#ffffff' },
-      { name: '연한 주황', bg: '#fb923c', text: '#ffffff' },
-      { name: '주황', bg: '#ea580c', text: '#ffffff' },
-      { name: '연한 노랑', bg: '#facc15', text: '#78350f' },
-      { name: '진한 노랑', bg: '#ca8a04', text: '#ffffff' },
+      { name: '연한 빨강', bg: '#fee2e2', text: '#991b1b' },
+      { name: '빨강', bg: '#fecaca', text: '#b91c1c' },
+      { name: '연한 주황', bg: '#ffedd5', text: '#9a3412' },
+      { name: '주황', bg: '#fed7aa', text: '#c2410c' },
+      { name: '연한 노랑', bg: '#fef9c3', text: '#854d0e' },
+      { name: '진한 노랑', bg: '#fef08a', text: '#a16207' },
 
-      { name: '연한 초록', bg: '#4ade80', text: '#14532d' },
-      { name: '초록', bg: '#16a34a', text: '#ffffff' },
-      { name: '연한 청록', bg: '#2dd4bf', text: '#134e4a' },
-      { name: '청록', bg: '#0d9488', text: '#ffffff' },
-      { name: '연한 파랑', bg: '#60a5fa', text: '#1e3a8a' },
-      { name: '파랑', bg: '#2563eb', text: '#ffffff' },
+      { name: '연한 초록', bg: '#dcfce7', text: '#166534' },
+      { name: '초록', bg: '#bbf7d0', text: '#15803d' },
+      { name: '연한 청록', bg: '#ccfbf1', text: '#115e59' },
+      { name: '청록', bg: '#99f6e4', text: '#0f766e' },
+      { name: '연한 파랑', bg: '#dbeafe', text: '#1e40af' },
+      { name: '파랑', bg: '#bfdbfe', text: '#1d4ed8' },
 
-      { name: '연한 남색', bg: '#818cf8', text: '#1e1b4b' },
-      { name: '남색', bg: '#4f46e5', text: '#ffffff' },
-      { name: '연한 보라', bg: '#c084fc', text: '#3b0764' },
-      { name: '보라', bg: '#9333ea', text: '#ffffff' },
-      { name: '연한 핑크', bg: '#f472b6', text: '#831843' },
-      { name: '핫핑크', bg: '#db2777', text: '#ffffff' },
+      { name: '연한 남색', bg: '#e0e7ff', text: '#3730a3' },
+      { name: '남색', bg: '#c7d2fe', text: '#4338ca' },
+      { name: '연한 보라', bg: '#f3e8ff', text: '#6b21a8' },
+      { name: '보라', bg: '#e9d5ff', text: '#7e22ce' },
+      { name: '연한 핑크', bg: '#fce7f3', text: '#9d174d' },
+      { name: '핫핑크', bg: '#fbcfe8', text: '#be185d' },
 
-      { name: '연한 회색', bg: '#9ca3af', text: '#111827' },
-      { name: '진한 회색', bg: '#4b5563', text: '#ffffff' },
-      { name: '다크그레이', bg: '#1f2937', text: '#ffffff' },
-      { name: '브라운', bg: '#b45309', text: '#ffffff' },
-      { name: '딥포레스트', bg: '#166534', text: '#ffffff' },
-      { name: '블랙', bg: '#000000', text: '#ffffff' }
+      { name: '연한 회색', bg: '#f3f4f6', text: '#374151' },
+      { name: '진한 회색', bg: '#e5e7eb', text: '#1f2937' },
+      { name: '다크그레이', bg: '#d1d5db', text: '#111827' },
+      { name: '브라운', bg: '#fef3c7', text: '#92400e' },
+      { name: '딥포레스트', bg: '#d1fae5', text: '#065f46' },
+      { name: '블랙', bg: '#e2e8f0', text: '#0f172a' }
     ];
-
+    
     /* 방송 특화 60종 이모지 세트 */
     const broadcastEmojis = [
       '🎙️', '📻', '📺', '🎬', '🎧', '🎮',
-      '🕹️', '⚔️', '🏹', '🛡️', '👾', '🏆',
+      '🕹️', '⚔️', '🐶​', '🛡️', '👾', '🏆',
       '💬', '🗣️', '💭', '📢', '🔥', '✨',
       '🐸', '🥩', '☕', '🍺', '🍿', '💡',
       '🎲', '♟️', '🎯', '🥇', '👑', '💎',
