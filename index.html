@@ -1979,9 +1979,8 @@ window.editRecord = function(id) {
   const target = dayData.records.find(r => r.id === id);
   if (!target) return;
 
-  editingRecordId = id;
+  window.editingRecordId = id;
 
-  // 값 채워넣기
   const textInput = document.getElementById('recordTextInput');
   const linkInput = document.getElementById('recordLinkInput');
   const submitBtn = document.getElementById('submitAddRecordBtn');
@@ -1991,13 +1990,11 @@ window.editRecord = function(id) {
   if (linkInput) linkInput.value = target.link || '';
   if (submitBtn) submitBtn.textContent = '수정 완료';
 
-  // 카테고리 맞춰주기
   if (target.catId) {
     if (typeof selectedFormCatId !== 'undefined') selectedFormCatId = target.catId;
     if (typeof selectFormCategory === 'function') selectFormCategory(target.catId);
   }
 
-  // 폼 열기 & 포커스
   if (wrap) wrap.classList.add('active');
   if (textInput) {
     textInput.focus();
@@ -2463,9 +2460,10 @@ document.getElementById('toggleAddContentBtn').addEventListener('click', () => {
     document.getElementById('recordTextInput').focus();
   }
 });
+
 document.getElementById('cancelAddRecordBtn').addEventListener('click', () => {
   formWrap.classList.remove('active');
-  editingRecordId = null;
+  window.editingRecordId = null;
   document.getElementById('submitAddRecordBtn').textContent = '등록';
 });
 
@@ -2483,8 +2481,8 @@ document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
     archiveData[selectedDateStr] = { repBadge: '', chzzkLink: '', records: [] };
   }
 
-  if (editingRecordId) {
-    const target = archiveData[selectedDateStr].records.find(r => r.id === editingRecordId);
+  if (window.editingRecordId) {
+    const target = archiveData[selectedDateStr].records.find(r => r.id === window.editingRecordId);
     if (target) {
       target.text = text;
       target.link = link;
@@ -2492,7 +2490,7 @@ document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
         target.catId = selectedFormCatId;
       }
     }
-    editingRecordId = null;
+    window.editingRecordId = null;
     showToast('방송 기록이 수정되었습니다!');
   } else {
     archiveData[selectedDateStr].records.unshift({
@@ -2513,7 +2511,6 @@ document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
   if (typeof renderDayDetail === 'function') renderDayDetail();
   if (typeof renderCalendar === 'function') renderCalendar();
 });
-
       const selectBtn = document.getElementById('selectDisplayBtn');
       const optList = document.getElementById('selectOptionsList');
       selectBtn.addEventListener('click', (e) => {
