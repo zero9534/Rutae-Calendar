@@ -2456,18 +2456,20 @@ window.editRecord = function(id) {
         saveStorage();
       });
 
-      const formWrap = document.getElementById('recordFormWrap');
-      document.getElementById('toggleAddContentBtn').addEventListener('click', () => {
-        formWrap.classList.toggle('active');
-        if (formWrap.classList.contains('active')) {
-          document.getElementById('recordTextInput').focus();
-        }
-      });
-      document.getElementById('cancelAddRecordBtn').addEventListener('click', () => {
-        formWrap.classList.remove('active');
-      });
+const formWrap = document.getElementById('recordFormWrap');
+document.getElementById('toggleAddContentBtn').addEventListener('click', () => {
+  formWrap.classList.toggle('active');
+  if (formWrap.classList.contains('active')) {
+    document.getElementById('recordTextInput').focus();
+  }
+});
+document.getElementById('cancelAddRecordBtn').addEventListener('click', () => {
+  formWrap.classList.remove('active');
+  editingRecordId = null;
+  document.getElementById('submitAddRecordBtn').textContent = '등록';
+});
 
-let editingRecordId = null; // 
+let editingRecordId = null;
 
 document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
   const text = document.getElementById('recordTextInput').value.trim();
@@ -2482,7 +2484,6 @@ document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
   }
 
   if (editingRecordId) {
-    // [수정 모드] 기존 기록 업데이트
     const target = archiveData[selectedDateStr].records.find(r => r.id === editingRecordId);
     if (target) {
       target.text = text;
@@ -2494,7 +2495,6 @@ document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
     editingRecordId = null;
     showToast('방송 기록이 수정되었습니다!');
   } else {
-    // [새 등록 모드] 신규 추가
     archiveData[selectedDateStr].records.unshift({
       id: 'rec_' + Date.now(),
       catId: selectedFormCatId,
@@ -2513,15 +2513,6 @@ document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
   if (typeof renderDayDetail === 'function') renderDayDetail();
   if (typeof renderCalendar === 'function') renderCalendar();
 });
-
-// 취소 버튼 누르면 수정 모드 초기화
-const cancelBtn = document.getElementById('cancelAddRecordBtn');
-if (cancelBtn) {
-  cancelBtn.addEventListener('click', () => {
-    editingRecordId = null;
-    document.getElementById('submitAddRecordBtn').textContent = '등록';
-  });
-}
 
       const selectBtn = document.getElementById('selectDisplayBtn');
       const optList = document.getElementById('selectOptionsList');
@@ -2948,4 +2939,3 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
   </script>
 </body>
 </html>
-});
