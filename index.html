@@ -1907,8 +1907,11 @@
               <span>${cat.emoji}</span>
               <span>${escapeHtml(cat.name)}</span>
             </span>
-            <i class="fa-regular fa-trash-can rec-del-btn" title="삭제" onclick="deleteRecord('${rec.id}')"></i>
-          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+          <i class="fa-regular fa-pen-to-square rec-del-btn" title="수정" style="cursor:pointer;" onclick="editRecord('${rec.id}')"></i>
+          <i class="fa-regular fa-trash-can rec-del-btn" title="삭제" onclick="deleteRecord('${rec.id}')"></i>
+        </div>
+     </div>
           <div class="rec-text">${escapeHtml(rec.text)}</div>
           ${linkHtml}
         `;
@@ -1942,15 +1945,37 @@
       }, 160);
     }
 
-    window.deleteRecord = function(id) {
-      const dayData = archiveData[selectedDateStr];
-      if (!dayData) return;
-      dayData.records = dayData.records.filter(r => r.id !== id);
-      saveStorage();
-      renderRecordList();
-      renderCalendar();
-      showToast('기록이 삭제되었습니다.');
-    };
+window.deleteRecord = function(id) {
+  if (!confirm("정말 이 기록을 삭제하시겠습니까?")) {
+    return;
+  }
+  const dayData = archiveData[selectedDateStr];
+  if (dayData && dayData.records) {
+    dayData.records = dayData.records.filter(r => r.id !== id);
+    saveStorage();
+    if (typeof renderDayDetail === 'function') renderDayDetail();
+    if (typeof renderCalendar === 'function') renderCalendar();
+  }
+};
+
+window.editRecord = function(id) {
+  const dayData = archiveData[selectedDateStr];
+  if (!dayData || !dayData.records) return;
+  const target = dayData.records.find(r => r.id === id);
+  if (!target) return;
+
+  const newText = prompt("수정할 방송 기록 내용을 입력하세요:", target.text);
+  if (newText === null) return;
+  if (newText.trim() === "") {
+    alert("내용을 입력해주세요.");
+    return;
+  }
+
+  target.text = newText.trim();
+  saveStorage();
+  if (typeof renderDayDetail === 'function') renderDayDetail();
+  if (typeof renderCalendar === 'function') renderCalendar();
+};
 
     function initCategoryManager() {
       const colorGrid = document.getElementById('rainbowColorGrid');
