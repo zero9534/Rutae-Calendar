@@ -1838,6 +1838,7 @@ dataRef.on('value', (snapshot) => {
     }
 
     function openDayDetail(dateStr) {
+      sessionStorage.setItem('activeDate', dateStr);
       selectedDateStr = dateStr;
       const calView = document.getElementById('calendarView');
       const detailView = document.getElementById('detailView');
@@ -2468,6 +2469,8 @@ window.editRecord = function(id) {
       initSearch();
       initYearMonthPicker();
       initHamburgerMenu();
+      const savedDate = sessionStorage.getItem('activeDate');
+      if (savedDate) openDayDetail(savedDate);
 
       const backToCalendar = () => {
         document.getElementById('detailView').classList.remove('active');
