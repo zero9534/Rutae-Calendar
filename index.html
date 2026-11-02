@@ -2157,24 +2157,18 @@ window.editRecord = function(id) {
           }
         }, 180);
       }
-      
-      document.getElementById('closeCatPanelBtn').addEventListener('click', closeCategoryPanel);
-  }
-
-  function renderCompactCatList() {
 
 document.getElementById('closeCatPanelBtn').addEventListener('click', closeCategoryPanel);
 
-// 바깥 영역 클릭 시 카테고리 패널 자동 닫기 (이벤트 충돌 방지 버전)
-      document.addEventListener('pointerdown', (e) => {
+      // 바깥 영역 클릭 시 카테고리 패널 자동 닫기
+      document.addEventListener('click', (e) => {
         const panel = document.getElementById('categorySidePanel');
         if (!panel || !panel.classList.contains('active')) return;
 
-        // 패널 안쪽을 눌렀으면 닫지 않음
-        if (panel.contains(e.target)) return;
-
-        // 패널을 열 때 누른 버튼이나 요소는 제외 (열리자마자 닫히는 현상 차단)
-        if (e.target.closest('#openCatPanelBtn') || e.target.closest('[id*="Cat"]') || e.target.closest('[class*="cat"]')) return;
+        // 패널 내부를 클릭했거나, 패널을 여는 버튼/관련 동작 클릭은 제외
+        if (panel.contains(e.target) || e.target.closest('#openCatPanelBtn') || e.target.closest('.cat-open-btn') || e.target.closest('#toggleCatBtn')) {
+          return;
+        }
 
         closeCategoryPanel();
       });
