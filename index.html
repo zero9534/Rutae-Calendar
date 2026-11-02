@@ -1490,13 +1490,23 @@
     };
     firebase.initializeApp(firebaseConfig);
     const dataRef = firebase.database().ref('calendar_archive_shared');
-   dataRef.on('value', (snapshot) => {
+  dataRef.on('value', (snapshot) => {
       const val = snapshot.val();
       if (val) {
-        if (val.categories) categories = val.categories;
+        if (val.categories && Array.isArray(val.categories) && val.categories.length > 0) {
+          categories = val.categories;
+          try {
+            localStorage.setItem('rutae_cats', JSON.stringify(categories));
+          } catch(e) {}
+          if (typeof renderCompactCatList === 'function') renderCompactCatList();
+          if (typeof renderCustomSelectOptions === 'function') renderCustomSelectOptions();
+        }
         if (val.archiveDataJson) {
           try { 
-            archiveData = JSON.parse(val.archiveDataJson); 
+            archiveData = JSON.parse(val.archiveDataJson);
+            try {
+              localStorage.setItem('rutae_data', JSON.stringify(archiveData));
+            } catch(e) {}
           } catch(e) {
             console.error("데이터 변환 오류:", e);
           }
@@ -1505,9 +1515,15 @@
       if (typeof renderCalendar === 'function') {
         renderCalendar();
       }
+      if (typeof renderRecordList === 'function') {
+        renderRecordList();
+      }
       if (typeof openDetailView === 'function' && typeof selectedDateStr !== 'undefined' && selectedDateStr) {
-      openDetailView(selectedDateStr);
-    }
+        const detailView = document.getElementById('detailView');
+        if (detailView && detailView.classList.contains('active')) {
+          renderDayDetail();
+        }
+      }
     });
 
     /* 실제 접속 날짜 기준으로 실시간 자동 초기화 */
