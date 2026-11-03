@@ -2160,31 +2160,23 @@ window.editRecord = function(id) {
 
 document.getElementById('closeCatPanelBtn').addEventListener('click', closeCategoryPanel);
 
-// 바깥 영역 클릭 및 터치/스와이프 시 카테고리 패널 자동 닫기
-      function handleCloseCatPanelOutside(e) {
+// 바깥 영역 클릭 시 카테고리 패널 자동 닫기
+      document.addEventListener('click', (e) => {
         const panel = document.getElementById('categorySidePanel');
         if (!panel || !panel.classList.contains('active')) return;
 
-        // 1. 패널 내부를 만졌을 때는 절대 닫지 않음
+        // 1. 패널 안쪽을 눌렀으면 닫지 않음
         if (panel.contains(e.target)) return;
 
-        // 2. '+ 카테고리 추가하기' 등 관련 버튼 터치 시 즉시 닫힘 방지
-        if (
-          e.target.closest('#openCatPanelBtn') ||
-          e.target.closest('.cat-open-btn') ||
-          e.target.closest('#toggleCatBtn') ||
-          (e.target.textContent && e.target.textContent.includes('카테고리 추가'))
-        ) {
+        // 2. 드롭다운의 '+ 카테고리 추가하기'를 누른 순간 바로 닫히는 현상 차단
+        if (e.target.closest('#openCatPanelBtn') || 
+            e.target.closest('.cat-open-btn') || 
+            (e.target.textContent && e.target.textContent.includes('카테고리 추가'))) {
           return;
         }
 
         closeCategoryPanel();
-      }
-
-      // 클릭, 터치 시작(스와이프 준비 동작), PC 마우스 누름, 휠 스크롤 감지
-      document.addEventListener('click', handleCloseCatPanelOutside);
-      document.addEventListener('touchstart', handleCloseCatPanelOutside, { passive: true });
-      window.addEventListener('wheel', handleCloseCatPanelOutside, { passive: true });
+      });
     }
 
     function renderCompactCatList() {
@@ -2498,52 +2490,23 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
       const savedDate = sessionStorage.getItem('activeDate');
       if (savedDate) openDayDetail(savedDate);
 
-const backToCalendar = () => {
-        const calView = document.getElementById('calendarView');
-        const detailView = document.getElementById('detailView');
-        if (!detailView.classList.contains('active')) return;
-
-        // 1. 일차별 화면 서서히 축소 & 페이드 아웃
-        detailView.style.transition = 'opacity 0.2s ease-out, transform 0.2s ease-out';
-        detailView.style.opacity = '0';
-        detailView.style.transform = 'scale(0.97)';
-
-        setTimeout(() => {
-          detailView.classList.remove('active');
-          detailView.style.opacity = '';
-          detailView.style.transform = '';
-          detailView.style.transition = '';
-
-          // 2. 월차별 달력 서서히 확대 & 페이드 인
-          calView.classList.add('active');
-          calView.style.opacity = '0';
-          calView.style.transform = 'scale(1.02)';
-
-          document.getElementById('prevMonthBtn').style.display = 'flex';
-          document.getElementById('nextMonthBtn').style.display = 'flex';
-          const monthBtn = document.getElementById('monthDisplayBtn');
-          monthBtn.style.display = 'block';
-          const menuBtn = document.getElementById('toggleMenuBtn');
-          if (menuBtn) menuBtn.style.display = 'flex';
-          const searchBtn = document.getElementById('toggleSearchBtn');
-          if (searchBtn) searchBtn.style.display = 'flex';
-          const searchWrap = document.getElementById('searchBoxWrap');
-          if (searchWrap) searchWrap.classList.remove('active');
-          const searchDrop = document.getElementById('searchDropdown');
-          if (searchDrop) searchDrop.classList.remove('active');
-          renderCalendar();
-
-          requestAnimationFrame(() => {
-            calView.style.transition = 'opacity 0.22s ease-out, transform 0.22s ease-out';
-            calView.style.opacity = '1';
-            calView.style.transform = 'scale(1)';
-            setTimeout(() => {
-              calView.style.transition = '';
-            }, 240);
-          });
-        }, 160);
+      const backToCalendar = () => {
+        document.getElementById('detailView').classList.remove('active');
+        document.getElementById('calendarView').classList.add('active');
+        document.getElementById('prevMonthBtn').style.display = 'flex';
+        document.getElementById('nextMonthBtn').style.display = 'flex';
+        const monthBtn = document.getElementById('monthDisplayBtn');
+        monthBtn.style.display = 'block';
+        const menuBtn = document.getElementById('toggleMenuBtn');
+        if (menuBtn) menuBtn.style.display = 'flex';
+        const searchBtn = document.getElementById('toggleSearchBtn');
+        if (searchBtn) searchBtn.style.display = 'flex';
+        const searchWrap = document.getElementById('searchBoxWrap');
+        if (searchWrap) searchWrap.classList.remove('active');
+        const searchDrop = document.getElementById('searchDropdown');
+        if (searchDrop) searchDrop.classList.remove('active');
+        renderCalendar();
       };
-      
       document.getElementById('brandHomeBtn').addEventListener('click', backToCalendar);
 
       document.getElementById('prevMonthBtn').addEventListener('click', () => shiftMonth(-1));
@@ -2965,14 +2928,6 @@ document.getElementById('confirmCancelBtn').addEventListener('click', () => {
 
       const detailView = document.getElementById('detailView');
       const calView = document.getElementById('calendarView');
-
-      const closePanelIfOpen = () => {
-        const panel = document.getElementById('categorySidePanel');
-        if (panel && panel.classList.contains('active')) {
-          panel.classList.remove('active');
-          panel.classList.remove('closing');
-        }
-      };
 
       document.addEventListener('touchstart', (e) => {
         if (!detailView.classList.contains('active')) return;
