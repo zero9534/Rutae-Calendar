@@ -793,25 +793,64 @@
       font-weight: 900;
       box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
-    .time-select-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 6px;
-    }
-    .time-dropdown-select {
-      padding: 8px;
-      border-radius: 10px;
+/* 도로록 다이얼 휠 피커 스타일 */
+    .wheel-picker-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      height: 150px;
+      position: relative;
+      background: #f8fafc;
+      border-radius: 14px;
+      overflow: hidden;
       border: 1.5px solid var(--border-color);
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-main);
-      outline: none;
-      background: #ffffff;
-      text-align: center;
-      cursor: pointer;
+      user-select: none;
     }
-    .time-dropdown-select:focus {
-      border-color: #38a169;
+    /* 중앙 선택 하이라이트 바 */
+    .wheel-picker-highlight {
+      position: absolute;
+      top: 55px;
+      left: 8px;
+      right: 8px;
+      height: 40px;
+      background: rgba(56, 161, 105, 0.12);
+      border-top: 1.5px solid #38a169;
+      border-bottom: 1.5px solid #38a169;
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .wheel-col {
+      flex: 1;
+      height: 100%;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scrollbar-width: none; /* 파이어폭스 스크롤바 숨김 */
+      -ms-overflow-style: none; /* IE 스크롤바 숨김 */
+      padding: 55px 0; /* 위아래 패딩으로 중앙 정렬 맞춤 */
+      box-sizing: border-box;
+      z-index: 2;
+    }
+    .wheel-col::-webkit-scrollbar {
+      display: none; /* 크롬 스크롤바 숨김 */
+    }
+    .wheel-item {
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #94a3b8;
+      scroll-snap-align: center;
+      cursor: pointer;
+      transition: color 0.12s, font-size 0.12s, transform 0.12s;
+    }
+    .wheel-item.selected {
+      color: #166534;
+      font-size: 16px;
+      font-weight: 900;
+      transform: scale(1.08);
     }
     
     .btn-save-primary {
@@ -1669,13 +1708,17 @@
         <button type="button" class="day-toggle-btn" id="btnTargetNextDay">+1일 (익일)</button>
       </div>
 
-      <div class="time-select-grid">
-        <select class="time-dropdown-select" id="timePickerAmpm">
-          <option value="오후">오후</option>
-          <option value="오전">오전</option>
-        </select>
-        <select class="time-dropdown-select" id="timePickerHour"></select>
-        <select class="time-dropdown-select" id="timePickerMinute"></select>
+<div class="wheel-picker-container">
+        <div class="wheel-picker-highlight"></div>
+        <!-- 오전/오후 -->
+        <div class="wheel-col" id="wheelAmpm">
+          <div class="wheel-item" data-value="오전">오전</div>
+          <div class="wheel-item" data-value="오후">오후</div>
+        </div>
+        <!-- 시 (01~12) -->
+        <div class="wheel-col" id="wheelHour"></div>
+        <!-- 분 (00~59) -->
+        <div class="wheel-col" id="wheelMinute"></div>
       </div>
 
       <div class="confirm-btn-row">
@@ -2791,19 +2834,68 @@ const repBadgeInput = document.getElementById('repBadgeInput');
         repBadgeInput.focus();
         repBadgeInput.select();
       });
-      // 방송 시간 피커 옵션 채우기 (1~12시, 5분 단위 분)
-      const hourSelect = document.getElementById('timePickerHour');
-      const minuteSelect = document.getElementById('timePickerMinute');
-      hourSelect.innerHTML = '';
-      minuteSelect.innerHTML = '';
+      
+      // 다이얼 휠 엘리먼트 세팅
+      const wheelAmpm = document.getElementById('wheelAmpm');
+      const wheelHour = document.getElementById('wheelHour');
+      const wheelMinute = document.getElementById('wheelMinute');
 
+      // 시(01~12), 분(00~59) 아이템 생성
+      wheelHour.innerHTML = '';
       for (let h = 1; h <= 12; h++) {
         const val = String(h).padStart(2, '0');
-        hourSelect.innerHTML += `<option value="${val}">${val}시</option>`;
+        wheelHour.innerHTML += `<div class="wheel-item" data-value="${val}">${val}시</div>`;
       }
+
+      wheelMinute.innerHTML = '';
       for (let m = 0; m < 60; m++) {
         const val = String(m).padStart(2, '0');
-        minuteSelect.innerHTML += `<option value="${val}">${val}분</option>`;
+        wheelMinute.innerHTML += `<div class="wheel-item" data-value="${val}">${val}분</div>`;
+      }
+
+      const ITEM_HEIGHT = 40;
+
+      function setupWheelScroll(col) {
+        col.addEventListener('scroll', () => {
+          const index = Math.round(col.scrollTop / ITEM_HEIGHT);
+          const items = col.querySelectorAll('.wheel-item');
+          items.forEach((item, idx) => {
+            if (idx === index) {
+              item.classList.add('selected');
+            } else {
+              item.classList.remove('selected');
+            }
+          });
+        });
+
+        col.addEventListener('click', (e) => {
+          const item = e.target.closest('.wheel-item');
+          if (!item) return;
+          const items = Array.from(col.querySelectorAll('.wheel-item'));
+          const idx = items.indexOf(item);
+          if (idx !== -1) {
+            col.scrollTo({ top: idx * ITEM_HEIGHT, behavior: 'smooth' });
+          }
+        });
+      }
+
+      setupWheelScroll(wheelAmpm);
+      setupWheelScroll(wheelHour);
+      setupWheelScroll(wheelMinute);
+
+      function setWheelValue(col, val, smooth = false) {
+        const items = Array.from(col.querySelectorAll('.wheel-item'));
+        const idx = items.findIndex(it => it.getAttribute('data-value') === val);
+        if (idx !== -1) {
+          col.scrollTo({ top: idx * ITEM_HEIGHT, behavior: smooth ? 'smooth' : 'auto' });
+          items.forEach((it, i) => it.classList.toggle('selected', i === idx));
+        }
+      }
+
+      function getWheelValue(col) {
+        const items = col.querySelectorAll('.wheel-item');
+        const idx = Math.min(Math.max(Math.round(col.scrollTop / ITEM_HEIGHT), 0), items.length - 1);
+        return items[idx] ? items[idx].getAttribute('data-value') : '';
       }
 
       let activeTimeType = 'ON';
@@ -2813,7 +2905,6 @@ const repBadgeInput = document.getElementById('repBadgeInput');
       const dayToggleRow = document.getElementById('timeModalDayToggleRow');
       const btnToday = document.getElementById('btnTargetToday');
       const btnNextDay = document.getElementById('btnTargetNextDay');
-      const ampmSelect = document.getElementById('timePickerAmpm');
 
       btnToday.addEventListener('click', () => {
         isNextDaySelected = false;
@@ -2848,22 +2939,24 @@ const repBadgeInput = document.getElementById('repBadgeInput');
           btnNextDay.classList.remove('active');
         }
 
-        const targetVal = type === 'ON' ? dayData.streamOn : dayData.streamOff;
-        if (targetVal) {
-          const parts = targetVal.split(' ');
-          if (parts.length === 2) {
-            ampmSelect.value = parts[0];
-            const [hh, mm] = parts[1].split(':');
-            hourSelect.value = hh;
-            minuteSelect.value = mm;
-          }
-        } else {
-          ampmSelect.value = type === 'ON' ? '오후' : '오전';
-          hourSelect.value = type === 'ON' ? '07' : '02';
-          minuteSelect.value = '00';
-        }
-
         timeModal.classList.add('active');
+
+        setTimeout(() => {
+          const targetVal = type === 'ON' ? dayData.streamOn : dayData.streamOff;
+          if (targetVal) {
+            const parts = targetVal.split(' ');
+            if (parts.length === 2) {
+              const [hh, mm] = parts[1].split(':');
+              setWheelValue(wheelAmpm, parts[0]);
+              setWheelValue(wheelHour, hh);
+              setWheelValue(wheelMinute, mm);
+            }
+          } else {
+            setWheelValue(wheelAmpm, type === 'ON' ? '오후' : '오전');
+            setWheelValue(wheelHour, type === 'ON' ? '07' : '02');
+            setWheelValue(wheelMinute, '00');
+          }
+        }, 50);
       }
 
       document.getElementById('streamOnBadge').addEventListener('click', () => openTimePicker('ON'));
@@ -2894,7 +2987,10 @@ const repBadgeInput = document.getElementById('repBadgeInput');
           archiveData[selectedDateStr] = { repBadge: '', chzzkLink: '', records: [] };
         }
 
-        const formattedTime = `${ampmSelect.value} ${hourSelect.value}:${minuteSelect.value}`;
+        const ampm = getWheelValue(wheelAmpm);
+        const hh = getWheelValue(wheelHour);
+        const mm = getWheelValue(wheelMinute);
+        const formattedTime = `${ampm} ${hh}:${mm}`;
 
         if (activeTimeType === 'ON') {
           archiveData[selectedDateStr].streamOn = formattedTime;
