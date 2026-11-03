@@ -3034,10 +3034,10 @@ let editingRecordId = null;
 document.getElementById('submitAddRecordBtn').addEventListener('click', () => {
   const text = document.getElementById('recordTextInput').value.trim();
   const link = document.getElementById('recordLinkInput').value.trim();
-  if (!text) {
-    alert('내용을 입력해주세요!');
-    return;
-  }
+if (!text) {
+          showToast('내용을 입력해주세요!');
+          return;
+        }
 
   if (!archiveData[selectedDateStr]) {
     archiveData[selectedDateStr] = { repBadge: '', chzzkLink: '', records: [] };
