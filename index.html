@@ -2548,18 +2548,63 @@ window.backToCalendar = function() {
       document.getElementById('prevDayBtn').addEventListener('click', () => shiftDay(-1));
       document.getElementById('nextDayBtn').addEventListener('click', () => shiftDay(1));
 
-      const repBadgeInput = document.getElementById('repBadgeInput');
-      repBadgeInput.addEventListener('input', autoResizeRepInput);
+const repBadgeInput = document.getElementById('repBadgeInput');
 
-      document.getElementById('saveRepBadgeBtn').addEventListener('click', () => {
+      // 1. 글자 길이에 딱 맞게 너비 실시간 자동 조절
+      function resizeBadgeInput() {
+        const val = repBadgeInput.value || '';
+        if (!val) {
+          repBadgeInput.style.width = '120px';
+          return;
+        }
+        let textLen = 0;
+        for (let i = 0; i < val.length; i++) {
+          textLen += val.charCodeAt(i) > 128 ? 14 : 8.5;
+        }
+        const calcWidth = Math.min(Math.max(textLen + 32, 100), 420);
+        repBadgeInput.style.width = calcWidth + 'px';
+      }
+
+      repBadgeInput.addEventListener('input', resizeBadgeInput);
+
+      // 2. 대표 멘트 자동 저장 함수
+      function saveRepBadgeAuto() {
+        if (repBadgeInput.readOnly) return;
+
         const val = repBadgeInput.value.trim();
         if (!archiveData[selectedDateStr]) {
           archiveData[selectedDateStr] = { repBadge: '', chzzkLink: '', records: [] };
         }
-        archiveData[selectedDateStr].repBadge = val;
-        saveStorage();
-        renderCalendar();
-        showToast('대표 멘트가 저장되었습니다!');
+
+        if (archiveData[selectedDateStr].repBadge !== val) {
+          archiveData[selectedDateStr].repBadge = val;
+          saveStorage();
+          renderCalendar();
+          showToast('대표 멘트가 저장되었습니다!');
+        }
+
+        resizeBadgeInput();
+
+        if (val) {
+          repBadgeInput.readOnly = true;
+          repBadgeInput.classList.add('saved-locked');
+        }
+      }
+
+      // 3. 입력창 바깥 클릭 또는 엔터키 입력 시 자동 저장
+      repBadgeInput.addEventListener('blur', saveRepBadgeAuto);
+      repBadgeInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          repBadgeInput.blur();
+        }
+      });
+
+      // 4. 더블클릭하면 잠금 해제되어 다시 수정 가능
+      repBadgeInput.addEventListener('dblclick', () => {
+        repBadgeInput.readOnly = false;
+        repBadgeInput.classList.remove('saved-locked');
+        repBadgeInput.focus();
+        repBadgeInput.select();
       });
 
       document.getElementById('chzzkInput').addEventListener('input', (e) => {
