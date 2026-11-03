@@ -2437,7 +2437,7 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
       pillBtn.addEventListener('touchend', cancelLongPress);
       pillBtn.addEventListener('touchcancel', cancelLongPress);
 
-      pillBtn.addEventListener('click', (e) => {
+pillBtn.addEventListener('click', (e) => {
         if (isLongPressTriggered) {
           isLongPressTriggered = false;
           return;
@@ -2445,19 +2445,7 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
 
         const calView = document.getElementById('calendarView');
         if (!calView.classList.contains('active')) {
-          document.getElementById('detailView').classList.remove('active');
-          calView.classList.add('active');
-          document.getElementById('prevMonthBtn').style.display = 'flex';
-          document.getElementById('nextMonthBtn').style.display = 'flex';
-          const menuBtn = document.getElementById('toggleMenuBtn');
-          if (menuBtn) menuBtn.style.display = 'flex';
-          const searchBtn = document.getElementById('toggleSearchBtn');
-          if (searchBtn) searchBtn.style.display = 'flex';
-          const searchWrap = document.getElementById('searchBoxWrap');
-          if (searchWrap) searchWrap.classList.remove('active');
-          const searchDrop = document.getElementById('searchDropdown');
-          if (searchDrop) searchDrop.classList.remove('active');
-          renderCalendar();
+          backToCalendar();
         }
       });
 
