@@ -2478,7 +2478,7 @@ pillBtn.addEventListener('click', (e) => {
       const savedDate = sessionStorage.getItem('activeDate');
       if (savedDate) openDayDetail(savedDate);
 
-const backToCalendar = () => {
+window.backToCalendar = function backToCalendar() {
         const calView = document.getElementById('calendarView');
         const detailView = document.getElementById('detailView');
         if (!detailView || !detailView.classList.contains('active')) return;
