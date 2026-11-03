@@ -2480,12 +2480,12 @@ pillBtn.addEventListener('click', (e) => {
       const savedDate = sessionStorage.getItem('activeDate');
       if (savedDate) openDayDetail(savedDate);
 
-window.backToCalendar = function backToCalendar() {
+window.backToCalendar = function() {
         const calView = document.getElementById('calendarView');
         const detailView = document.getElementById('detailView');
         if (!detailView || !detailView.classList.contains('active')) return;
 
-        // 1. 일차별 화면 축소하며 페이드아웃 (openDayDetail과 완벽 대칭)
+        // 1. 일차별 화면 축소하며 페이드아웃 (openDayDetail과 대칭)
         detailView.style.opacity = '0';
         detailView.style.transform = 'scale(0.97)';
         detailView.style.transition = 'opacity 0.2s ease-out, transform 0.2s ease-out';
@@ -2525,7 +2525,8 @@ window.backToCalendar = function backToCalendar() {
           });
         }, 160);
       };
-      document.getElementById('brandHomeBtn').addEventListener('click', backToCalendar);
+
+      document.getElementById('brandHomeBtn').addEventListener('click', window.backToCalendar);
 
       document.getElementById('prevMonthBtn').addEventListener('click', () => shiftMonth(-1));
       document.getElementById('nextMonthBtn').addEventListener('click', () => shiftMonth(1));
