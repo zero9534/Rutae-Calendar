@@ -873,6 +873,154 @@
       background-color: #2f855a;
       transform: translateY(-1px);
     }
+/* 일차별 2단 분할 레이아웃 */
+    .detail-2col-layout {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
+    .detail-left-col {
+      flex: 1.15;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+    .detail-right-col {
+      flex: 0.85;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    @media (max-width: 1024px) {
+      .detail-2col-layout {
+        flex-direction: column;
+      }
+      .detail-left-col, .detail-right-col {
+        width: 100%;
+      }
+    }
+
+    /* 타임라인 카드 스타일 */
+    .timeline-card {
+      background: #ffffff;
+      border-radius: 18px;
+      border: 2px solid var(--border-color);
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: all 0.2s ease-out;
+    }
+    .timeline-form-wrap {
+      display: none;
+      background: #f7fbf8;
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .timeline-form-wrap.active {
+      display: flex;
+    }
+    .timeline-input-row {
+      display: flex;
+      gap: 8px;
+    }
+    .timeline-time-input {
+      width: 100px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-color);
+      font-size: 13px;
+      font-weight: 800;
+      color: #166534;
+      outline: none;
+      background: #ffffff;
+      text-align: center;
+    }
+    .timeline-time-input:focus, .timeline-memo-input:focus {
+      border-color: #38a169;
+    }
+    .timeline-memo-input {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-color);
+      font-size: 13px;
+      font-weight: 700;
+      outline: none;
+      background: #ffffff;
+    }
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .timeline-item-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .timeline-item-card:hover {
+      border-color: #81c784;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+    .timeline-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+    .timeline-stamp-badge {
+      background: #f0fdf4;
+      border: 1px solid #a7f3d0;
+      color: #166534;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 5px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    .timeline-memo-text {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #374151;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .timeline-more-btn {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 8px 0;
+      color: #276749;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: color 0.12s;
+    }
+    .timeline-more-btn:hover {
+      color: #166534;
+      text-decoration: underline;
+    }
 
     .record-card {
       background: #ffffff;
@@ -1587,6 +1735,9 @@
             <div class="detail-date-badge" id="detailDateDisplay">1일 일요일</div>
             <button class="nav-arrow-btn" id="nextDayBtn" title="다음 날짜"><i class="fa-solid fa-chevron-right"></i></button>
           </div>
+<!-- 2단 시작 -->
+          <div class="detail-2col-layout">
+            <div class="detail-left-col">
 
 <div class="rep-card">
             <div class="rep-left-group">
@@ -1657,6 +1808,42 @@
               <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;"></i>
             </a>
           </div>
+</div>
+            <!-- 왼쪽 컬럼 끝 -->
+
+            <!-- 오른쪽 타임라인 카드 시작 -->
+            <div class="detail-right-col">
+              <div class="timeline-card">
+                <div class="record-header-row">
+                  <div class="section-unified-title">
+                    <span>타임라인</span>
+                    <span class="record-count-badge" id="timelineCountBadge">0</span>
+                  </div>
+                  <button class="btn-add-content" id="toggleAddTimelineBtn">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>시간추가</span>
+                  </button>
+                </div>
+
+                <div class="timeline-form-wrap" id="timelineFormWrap">
+                  <div class="timeline-input-row">
+                    <input type="text" class="timeline-time-input" id="timelineTimeInput" placeholder="1:32:40" maxlength="10">
+                    <input type="text" class="timeline-memo-input" id="timelineMemoInput" placeholder="간단한 메모 (예: 동숲 모드 시작)" maxlength="35">
+                  </div>
+                  <div class="form-btn-row">
+                    <button class="btn-form-cancel" id="cancelAddTimelineBtn">취소</button>
+                    <button class="btn-form-submit" id="submitAddTimelineBtn">등록</button>
+                  </div>
+                </div>
+
+                <div class="timeline-list" id="timelineListContainer"></div>
+                <button type="button" class="timeline-more-btn" id="timelineMoreBtn" style="display:none;">+ 더보기</button>
+              </div>
+            </div>
+            <!-- 오른쪽 타임라인 끝 -->
+
+          </div>
+          <!-- 2단 끝 -->
 
         </div>
       </div>
@@ -2161,6 +2348,7 @@ dataRef.on('value', (snapshot) => {
       renderCustomSelectOptions();
 
       renderRecordList();
+      renderTimelineList();
     }
 
     function updateChzzkOpenBtn(url) {
@@ -2246,6 +2434,100 @@ dataRef.on('value', (snapshot) => {
           isTransitioning = false;
         }, 30);
       }, 160);
+    }
+
+let isTimelineExpanded = false;
+    let pendingDeleteTimelineId = null;
+    window.editingTimelineId = null;
+
+    function renderTimelineList() {
+      const dayData = archiveData[selectedDateStr];
+      const timelines = dayData ? dayData.timelines || [] : [];
+      const listContainer = document.getElementById('timelineListContainer');
+      const countBadge = document.getElementById('timelineCountBadge');
+      const moreBtn = document.getElementById('timelineMoreBtn');
+
+      if (countBadge) countBadge.textContent = timelines.length;
+      if (!listContainer) return;
+
+      listContainer.innerHTML = '';
+
+      if (timelines.length === 0) {
+        listContainer.innerHTML = `
+          <div style="text-align:center; padding: 24px 0; color:#9ca3af; font-size:12.5px;">
+            등록된 타임라인이 없습니다.<br><span style="font-size:11.5px; opacity:0.8;">[+ 시간추가]를 눌러 주요 시점을 기록해보세요!</span>
+          </div>`;
+        if (moreBtn) moreBtn.style.display = 'none';
+        return;
+      }
+
+      // 3개 이상일 때만 더보기 버튼 노출, 기본은 2개까지 표시
+      const visibleItems = isTimelineExpanded ? timelines : timelines.slice(0, 2);
+
+      visibleItems.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'timeline-item-card';
+        row.innerHTML = `
+          <div class="timeline-item-left">
+            <span class="timeline-stamp-badge">${escapeHtml(item.time)}</span>
+            <span class="timeline-memo-text" title="${escapeHtml(item.memo)}">${escapeHtml(item.memo)}</span>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <i class="fa-regular fa-pen-to-square rec-del-btn" title="수정" style="cursor:pointer;" onclick="editTimeline('${item.id}')"></i>
+            <i class="fa-regular fa-trash-can rec-del-btn" title="삭제" onclick="deleteTimeline('${item.id}')"></i>
+          </div>
+        `;
+        listContainer.appendChild(row);
+      });
+
+      if (moreBtn) {
+        if (timelines.length > 2) {
+          moreBtn.style.display = 'flex';
+          moreBtn.textContent = isTimelineExpanded ? '- 접기' : `+ 더보기 (${timelines.length - 2}개 더보기)`;
+        } else {
+          moreBtn.style.display = 'none';
+        }
+      }
+    }
+
+    window.editTimeline = function(id) {
+      const dayData = archiveData[selectedDateStr];
+      if (!dayData || !dayData.timelines) return;
+      const target = dayData.timelines.find(t => t.id === id);
+      if (!target) return;
+
+      window.editingTimelineId = id;
+      const timeInput = document.getElementById('timelineTimeInput');
+      const memoInput = document.getElementById('timelineMemoInput');
+      const submitBtn = document.getElementById('submitAddTimelineBtn');
+      const formWrap = document.getElementById('timelineFormWrap');
+
+      if (timeInput) timeInput.value = target.time || '';
+      if (memoInput) memoInput.value = target.memo || '';
+      if (submitBtn) submitBtn.textContent = '수정 완료';
+      if (formWrap) formWrap.classList.add('active');
+      if (timeInput) timeInput.focus();
+    };
+
+    window.deleteTimeline = function(id) {
+      pendingDeleteCatId = null;
+      pendingDeleteRecordId = null;
+      pendingDeleteTimelineId = id;
+
+      const modal = document.getElementById('categoryConfirmModal');
+      const titleEl = document.getElementById('confirmModalText');
+      if (modal) {
+        if (titleEl) titleEl.textContent = '해당 타임라인을 정말 삭제하시겠습니까?';
+        modal.classList.add('active');
+      }
+    };
+
+    function executeDeleteTimeline(id) {
+      if (!selectedDateStr || !archiveData[selectedDateStr] || !archiveData[selectedDateStr].timelines) return;
+      archiveData[selectedDateStr].timelines = archiveData[selectedDateStr].timelines.filter(t => t.id !== id);
+      saveStorage();
+      renderTimelineList();
+      showToast('타임라인이 삭제되었습니다!');
     }
 
 let pendingDeleteRecordId = null;
@@ -3015,6 +3297,87 @@ const repBadgeInput = document.getElementById('repBadgeInput');
         saveStorage();
       });
 
+// 타임라인 추가 / 취소 / 등록 / 더보기 이벤트
+      const timelineFormWrap = document.getElementById('timelineFormWrap');
+      const toggleTimelineBtn = document.getElementById('toggleAddTimelineBtn');
+      const cancelTimelineBtn = document.getElementById('cancelAddTimelineBtn');
+      const submitTimelineBtn = document.getElementById('submitAddTimelineBtn');
+      const timelineMoreBtn = document.getElementById('timelineMoreBtn');
+
+      if (toggleTimelineBtn) {
+        toggleTimelineBtn.addEventListener('click', () => {
+          timelineFormWrap.classList.toggle('active');
+          if (timelineFormWrap.classList.contains('active')) {
+            document.getElementById('timelineTimeInput').focus();
+          }
+        });
+      }
+
+      if (cancelTimelineBtn) {
+        cancelTimelineBtn.addEventListener('click', () => {
+          timelineFormWrap.classList.remove('active');
+          window.editingTimelineId = null;
+          document.getElementById('timelineTimeInput').value = '';
+          document.getElementById('timelineMemoInput').value = '';
+          submitTimelineBtn.textContent = '등록';
+        });
+      }
+
+      if (timelineMoreBtn) {
+        timelineMoreBtn.addEventListener('click', () => {
+          isTimelineExpanded = !isTimelineExpanded;
+          renderTimelineList();
+        });
+      }
+
+      if (submitTimelineBtn) {
+        submitTimelineBtn.addEventListener('click', () => {
+          const timeVal = document.getElementById('timelineTimeInput').value.trim();
+          const memoVal = document.getElementById('timelineMemoInput').value.trim();
+
+          if (!timeVal) {
+            showToast('시간을 입력해주세요! (예: 1:32:40)');
+            return;
+          }
+          if (!memoVal) {
+            showToast('메모 내용을 입력해주세요!');
+            return;
+          }
+
+          if (!archiveData[selectedDateStr]) {
+            archiveData[selectedDateStr] = { repBadge: '', chzzkLink: '', records: [], timelines: [] };
+          }
+          if (!archiveData[selectedDateStr].timelines) {
+            archiveData[selectedDateStr].timelines = [];
+          }
+
+          if (window.editingTimelineId) {
+            const target = archiveData[selectedDateStr].timelines.find(t => t.id === window.editingTimelineId);
+            if (target) {
+              target.time = timeVal;
+              target.memo = memoVal;
+            }
+            window.editingTimelineId = null;
+            showToast('타임라인이 수정되었습니다!');
+          } else {
+            // 새로 추가한 것이 맨 위로 오도록 unshift
+            archiveData[selectedDateStr].timelines.unshift({
+              id: 'time_' + Date.now(),
+              time: timeVal,
+              memo: memoVal
+            });
+            showToast('타임라인이 등록되었습니다!');
+          }
+
+          saveStorage();
+          document.getElementById('timelineTimeInput').value = '';
+          document.getElementById('timelineMemoInput').value = '';
+          submitTimelineBtn.textContent = '등록';
+          timelineFormWrap.classList.remove('active');
+          renderTimelineList();
+        });
+      }
+
 const formWrap = document.getElementById('recordFormWrap');
 document.getElementById('toggleAddContentBtn').addEventListener('click', () => {
   formWrap.classList.toggle('active');
@@ -3112,6 +3475,14 @@ document.getElementById('confirmCancelBtn').addEventListener('click', () => {
 
         if (pendingDeleteRecordId) {
           executeDeleteRecord(pendingDeleteRecordId);
+          pendingDeleteRecordId = null;
+          pendingDeleteCatId = null;
+          document.getElementById('categoryConfirmModal').classList.remove('active');
+          return;
+        }
+if (pendingDeleteTimelineId) {
+          executeDeleteTimeline(pendingDeleteTimelineId);
+          pendingDeleteTimelineId = null;
           pendingDeleteRecordId = null;
           pendingDeleteCatId = null;
           document.getElementById('categoryConfirmModal').classList.remove('active');
