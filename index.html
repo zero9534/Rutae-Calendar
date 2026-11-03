@@ -686,7 +686,15 @@
       border-color: #38a169;
       box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.15);
     }
-
+    
+/* 저장 완료된 읽기 모드 상태 */
+    .rep-input-expand.saved-locked {
+      background-color: #f0fdf4;
+      border-color: #a7f3d0;
+      color: #166534;
+      cursor: pointer;
+    }
+    
     .btn-save-primary {
       background-color: #38a169;
       color: #ffffff;
@@ -1427,10 +1435,9 @@
               <span class="section-unified-title">대표 멘트</span>
               <input type="text" class="rep-input-expand" id="repBadgeInput" maxlength="24">
             </div>
-            <button class="btn-save-primary" id="saveRepBadgeBtn">
-              <i class="fa-solid fa-check"></i>
-              <span>저장</span>
-            </button>
+            <div id="streamTimeSlot" style="display: flex; align-items: center; gap: 12px;">
+              <!-- 2단계에서 여기에 ON / OFF 시간 컴포넌트가 들어갈 자리 -->
+            </div>
           </div>
 
           <div class="record-card">
@@ -1910,6 +1917,13 @@ dataRef.on('value', (snapshot) => {
       const repInput = document.getElementById('repBadgeInput');
       repInput.value = dayData.repBadge || '';
       autoResizeRepInput();
+      if (dayData.repBadge && dayData.repBadge.trim()) {
+        repInput.readOnly = true;
+        repInput.classList.add('saved-locked');
+      } else {
+        repInput.readOnly = false;
+        repInput.classList.remove('saved-locked');
+      }
 
       const chzzkInput = document.getElementById('chzzkInput');
       chzzkInput.value = dayData.chzzkLink || '';
