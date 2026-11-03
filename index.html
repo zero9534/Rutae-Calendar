@@ -2445,7 +2445,9 @@ pillBtn.addEventListener('click', (e) => {
 
         const calView = document.getElementById('calendarView');
         if (!calView.classList.contains('active')) {
-          backToCalendar();
+          if (typeof window.backToCalendar === 'function') {
+            window.backToCalendar();
+          }
         }
       });
 
