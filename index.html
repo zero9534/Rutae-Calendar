@@ -2801,7 +2801,7 @@ const repBadgeInput = document.getElementById('repBadgeInput');
         const val = String(h).padStart(2, '0');
         hourSelect.innerHTML += `<option value="${val}">${val}시</option>`;
       }
-      for (let m = 0; m < 60; m += 5) {
+      for (let m = 0; m < 60; m++) {
         const val = String(m).padStart(2, '0');
         minuteSelect.innerHTML += `<option value="${val}">${val}분</option>`;
       }
