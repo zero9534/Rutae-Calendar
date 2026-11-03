@@ -694,6 +694,125 @@
       color: #166534;
       cursor: pointer;
     }
+    /* ON / OFF 시간 컴포넌트 스타일 */
+    .stream-time-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stream-time-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stream-time-label {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #276749;
+      letter-spacing: -0.3px;
+    }
+    .stream-time-badge {
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 82px;
+      justify-content: center;
+      transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+    }
+    .stream-time-badge:hover {
+      border-color: #38a169;
+      background-color: #f0fdf4;
+    }
+    .stream-time-badge.has-time {
+      background-color: #f0fdf4;
+      border-color: #a7f3d0;
+      color: #166534;
+      font-weight: 900;
+    }
+    .next-day-pill {
+      background-color: #fef3c7;
+      color: #b45309;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid #fde68a;
+    }
+
+    /* 카카오맵 스타일 시간 설정 팝업 */
+    .time-picker-modal-box {
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      padding: 20px 22px;
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      animation: fadeInPopup 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .time-picker-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #276749;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .day-toggle-row {
+      display: flex;
+      gap: 6px;
+      background: #f3f4f6;
+      padding: 3px;
+      border-radius: 10px;
+    }
+    .day-toggle-btn {
+      flex: 1;
+      padding: 6px 0;
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+      color: #6b7280;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .day-toggle-btn.active {
+      background: #ffffff;
+      color: #166534;
+      font-weight: 900;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .time-select-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+    }
+    .time-dropdown-select {
+      padding: 8px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-color);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-main);
+      outline: none;
+      background: #ffffff;
+      text-align: center;
+      cursor: pointer;
+    }
+    .time-dropdown-select:focus {
+      border-color: #38a169;
+    }
     
     .btn-save-primary {
       background-color: #38a169;
@@ -1430,13 +1549,25 @@
             <button class="nav-arrow-btn" id="nextDayBtn" title="다음 날짜"><i class="fa-solid fa-chevron-right"></i></button>
           </div>
 
-          <div class="rep-card">
+<div class="rep-card">
             <div class="rep-left-group">
               <span class="section-unified-title">대표 멘트</span>
-              <input type="text" class="rep-input-expand" id="repBadgeInput" maxlength="24">
+              <input type="text" class="rep-input-expand" id="repBadgeInput" maxlength="24" placeholder="대표 멘트 입력" title="더블클릭하여 수정">
             </div>
-            <div id="streamTimeSlot" style="display: flex; align-items: center; gap: 12px;">
-              <!-- 2단계에서 여기에 ON / OFF 시간 컴포넌트가 들어갈 자리 -->
+            <div id="streamTimeSlot" class="stream-time-group">
+              <div class="stream-time-item">
+                <span class="stream-time-label">ON</span>
+                <div class="stream-time-badge" id="streamOnBadge" title="방송 시작 시간 설정">
+                  <span id="streamOnText">--:--</span>
+                </div>
+              </div>
+
+              <div class="stream-time-item">
+                <span class="stream-time-label">OFF</span>
+                <div class="stream-time-badge" id="streamOffBadge" title="방송 종료 시간 설정">
+                  <span id="streamOffText">--:--</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1522,6 +1653,34 @@
       <div class="confirm-btn-row">
         <button class="confirm-cancel-btn" id="confirmCancelBtn">취소</button>
         <button class="confirm-delete-btn" id="confirmDeleteBtn">삭제</button>
+      </div>
+    </div>
+  </div>
+  <!-- 방송 시간 설정 모달 (카카오맵 스타일) -->
+  <div class="confirm-modal-overlay" id="streamTimeModal">
+    <div class="time-picker-modal-box">
+      <div class="time-picker-title">
+        <span id="timePickerHeaderTitle">⏰ 시간 설정</span>
+        <button type="button" class="cat-close-btn" id="closeTimeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="day-toggle-row" id="timeModalDayToggleRow">
+        <button type="button" class="day-toggle-btn active" id="btnTargetToday">당일</button>
+        <button type="button" class="day-toggle-btn" id="btnTargetNextDay">+1일 (익일)</button>
+      </div>
+
+      <div class="time-select-grid">
+        <select class="time-dropdown-select" id="timePickerAmpm">
+          <option value="오후">오후</option>
+          <option value="오전">오전</option>
+        </select>
+        <select class="time-dropdown-select" id="timePickerHour"></select>
+        <select class="time-dropdown-select" id="timePickerMinute"></select>
+      </div>
+
+      <div class="confirm-btn-row">
+        <button type="button" class="confirm-cancel-btn" id="clearStreamTimeBtn" style="color:#ef4444;">초기화</button>
+        <button type="button" class="confirm-delete-btn" id="confirmStreamTimeBtn" style="background:#38a169;">확인</button>
       </div>
     </div>
   </div>
@@ -1928,6 +2087,32 @@ dataRef.on('value', (snapshot) => {
       const chzzkInput = document.getElementById('chzzkInput');
       chzzkInput.value = dayData.chzzkLink || '';
       updateChzzkOpenBtn(dayData.chzzkLink);
+      
+      // 방송 시작(ON) / 종료(OFF) 시간 뱃지 UI 갱신
+      const onTextEl = document.getElementById('streamOnText');
+      const offTextEl = document.getElementById('streamOffText');
+      const onBadgeEl = document.getElementById('streamOnBadge');
+      const offBadgeEl = document.getElementById('streamOffBadge');
+
+      if (dayData.streamOn) {
+        onTextEl.textContent = dayData.streamOn;
+        onBadgeEl.classList.add('has-time');
+      } else {
+        onTextEl.textContent = '--:--';
+        onBadgeEl.classList.remove('has-time');
+      }
+
+      if (dayData.streamOff) {
+        if (dayData.streamOffIsNextDay) {
+          offTextEl.innerHTML = `<span class="next-day-pill">+1일</span> ${escapeHtml(dayData.streamOff)}`;
+        } else {
+          offTextEl.textContent = dayData.streamOff;
+        }
+        offBadgeEl.classList.add('has-time');
+      } else {
+        offTextEl.textContent = '--:--';
+        offBadgeEl.classList.remove('has-time');
+      }
 
       renderCompactCatList();
       renderCustomSelectOptions();
@@ -2605,6 +2790,123 @@ const repBadgeInput = document.getElementById('repBadgeInput');
         repBadgeInput.classList.remove('saved-locked');
         repBadgeInput.focus();
         repBadgeInput.select();
+      });
+      // 방송 시간 피커 옵션 채우기 (1~12시, 5분 단위 분)
+      const hourSelect = document.getElementById('timePickerHour');
+      const minuteSelect = document.getElementById('timePickerMinute');
+      hourSelect.innerHTML = '';
+      minuteSelect.innerHTML = '';
+
+      for (let h = 1; h <= 12; h++) {
+        const val = String(h).padStart(2, '0');
+        hourSelect.innerHTML += `<option value="${val}">${val}시</option>`;
+      }
+      for (let m = 0; m < 60; m += 5) {
+        const val = String(m).padStart(2, '0');
+        minuteSelect.innerHTML += `<option value="${val}">${val}분</option>`;
+      }
+
+      let activeTimeType = 'ON';
+      let isNextDaySelected = false;
+
+      const timeModal = document.getElementById('streamTimeModal');
+      const dayToggleRow = document.getElementById('timeModalDayToggleRow');
+      const btnToday = document.getElementById('btnTargetToday');
+      const btnNextDay = document.getElementById('btnTargetNextDay');
+      const ampmSelect = document.getElementById('timePickerAmpm');
+
+      btnToday.addEventListener('click', () => {
+        isNextDaySelected = false;
+        btnToday.classList.add('active');
+        btnNextDay.classList.remove('active');
+      });
+
+      btnNextDay.addEventListener('click', () => {
+        isNextDaySelected = true;
+        btnNextDay.classList.add('active');
+        btnToday.classList.remove('active');
+      });
+
+      function openTimePicker(type) {
+        activeTimeType = type;
+        const dayData = archiveData[selectedDateStr] || {};
+        document.getElementById('timePickerHeaderTitle').textContent = type === 'ON' ? '⏰ 방송 시작 시간 (ON)' : '⏰ 방송 종료 시간 (OFF)';
+
+        if (type === 'ON') {
+          dayToggleRow.style.display = 'none';
+          isNextDaySelected = false;
+        } else {
+          dayToggleRow.style.display = 'flex';
+          isNextDaySelected = !!dayData.streamOffIsNextDay;
+        }
+
+        if (isNextDaySelected) {
+          btnNextDay.classList.add('active');
+          btnToday.classList.remove('active');
+        } else {
+          btnToday.classList.add('active');
+          btnNextDay.classList.remove('active');
+        }
+
+        const targetVal = type === 'ON' ? dayData.streamOn : dayData.streamOff;
+        if (targetVal) {
+          const parts = targetVal.split(' ');
+          if (parts.length === 2) {
+            ampmSelect.value = parts[0];
+            const [hh, mm] = parts[1].split(':');
+            hourSelect.value = hh;
+            minuteSelect.value = mm;
+          }
+        } else {
+          ampmSelect.value = type === 'ON' ? '오후' : '오전';
+          hourSelect.value = type === 'ON' ? '07' : '02';
+          minuteSelect.value = '00';
+        }
+
+        timeModal.classList.add('active');
+      }
+
+      document.getElementById('streamOnBadge').addEventListener('click', () => openTimePicker('ON'));
+      document.getElementById('streamOffBadge').addEventListener('click', () => openTimePicker('OFF'));
+
+      document.getElementById('closeTimeModalBtn').addEventListener('click', () => {
+        timeModal.classList.remove('active');
+      });
+
+      // 초기화 버튼
+      document.getElementById('clearStreamTimeBtn').addEventListener('click', () => {
+        if (!archiveData[selectedDateStr]) return;
+        if (activeTimeType === 'ON') {
+          delete archiveData[selectedDateStr].streamOn;
+        } else {
+          delete archiveData[selectedDateStr].streamOff;
+          delete archiveData[selectedDateStr].streamOffIsNextDay;
+        }
+        saveStorage();
+        renderDayDetail();
+        timeModal.classList.remove('active');
+        showToast('시간이 초기화되었습니다.');
+      });
+
+      // 확인 버튼 (자동 저장)
+      document.getElementById('confirmStreamTimeBtn').addEventListener('click', () => {
+        if (!archiveData[selectedDateStr]) {
+          archiveData[selectedDateStr] = { repBadge: '', chzzkLink: '', records: [] };
+        }
+
+        const formattedTime = `${ampmSelect.value} ${hourSelect.value}:${minuteSelect.value}`;
+
+        if (activeTimeType === 'ON') {
+          archiveData[selectedDateStr].streamOn = formattedTime;
+        } else {
+          archiveData[selectedDateStr].streamOff = formattedTime;
+          archiveData[selectedDateStr].streamOffIsNextDay = isNextDaySelected;
+        }
+
+        saveStorage();
+        renderDayDetail();
+        timeModal.classList.remove('active');
+        showToast('방송 시간이 저장되었습니다!');
       });
 
       document.getElementById('chzzkInput').addEventListener('input', (e) => {
