@@ -2437,7 +2437,7 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
       pillBtn.addEventListener('touchend', cancelLongPress);
       pillBtn.addEventListener('touchcancel', cancelLongPress);
 
-pillBtn.addEventListener('click', (e) => {
+      pillBtn.addEventListener('click', (e) => {
         if (isLongPressTriggered) {
           isLongPressTriggered = false;
           return;
@@ -2445,12 +2445,22 @@ pillBtn.addEventListener('click', (e) => {
 
         const calView = document.getElementById('calendarView');
         if (!calView.classList.contains('active')) {
-          if (typeof backToCalendar === 'function') {
-            backToCalendar();
-          }
+          document.getElementById('detailView').classList.remove('active');
+          calView.classList.add('active');
+          document.getElementById('prevMonthBtn').style.display = 'flex';
+          document.getElementById('nextMonthBtn').style.display = 'flex';
+          const menuBtn = document.getElementById('toggleMenuBtn');
+          if (menuBtn) menuBtn.style.display = 'flex';
+          const searchBtn = document.getElementById('toggleSearchBtn');
+          if (searchBtn) searchBtn.style.display = 'flex';
+          const searchWrap = document.getElementById('searchBoxWrap');
+          if (searchWrap) searchWrap.classList.remove('active');
+          const searchDrop = document.getElementById('searchDropdown');
+          if (searchDrop) searchDrop.classList.remove('active');
+          renderCalendar();
         }
       });
-      
+
       prevYearBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         pickerViewingYear--;
@@ -2480,52 +2490,22 @@ pillBtn.addEventListener('click', (e) => {
       const savedDate = sessionStorage.getItem('activeDate');
       if (savedDate) openDayDetail(savedDate);
 
-window.backToCalendar = function() {
-        const calView = document.getElementById('calendarView');
-        const detailView = document.getElementById('detailView');
-        if (!detailView || !detailView.classList.contains('active')) return;
-
-        // 1. 일차별 상세창 축소 & 페이드 아웃 시작
-        detailView.style.transition = 'opacity 0.2s ease-out, transform 0.2s ease-out';
-        detailView.style.opacity = '0';
-        detailView.style.transform = 'scale(0.97)';
-
-        setTimeout(() => {
-          // 일차별 닫고 월별 달력 열기
-          detailView.classList.remove('active');
-          detailView.style.opacity = '';
-          detailView.style.transform = '';
-          detailView.style.transition = '';
-
-          calView.classList.add('active');
-          // 월별 달력 초기 투명 상태 세팅
-          calView.style.opacity = '0';
-          calView.style.transform = 'scale(1.02)';
-          calView.style.transition = 'opacity 0.22s ease-out, transform 0.22s ease-out';
-
-          document.getElementById('prevMonthBtn').style.display = 'flex';
-          document.getElementById('nextMonthBtn').style.display = 'flex';
-          const monthBtn = document.getElementById('monthDisplayBtn');
-          monthBtn.style.display = 'block';
-          const menuBtn = document.getElementById('toggleMenuBtn');
-          if (menuBtn) menuBtn.style.display = 'flex';
-          const searchBtn = document.getElementById('toggleSearchBtn');
-          if (searchBtn) searchBtn.style.display = 'flex';
-          const searchWrap = document.getElementById('searchBoxWrap');
-          if (searchWrap) searchWrap.classList.remove('active');
-          const searchDrop = document.getElementById('searchDropdown');
-          if (searchDrop) searchDrop.classList.remove('active');
-          renderCalendar();
-
-          // 브라우저 렌더링 강제 갱신 후 부드럽게 페이드 인
-          requestAnimationFrame(() => {
-            calView.style.opacity = '1';
-            calView.style.transform = 'scale(1)';
-            setTimeout(() => {
-              calView.style.transition = '';
-            }, 230);
-          });
-        }, 180);
+      const backToCalendar = () => {
+        document.getElementById('detailView').classList.remove('active');
+        document.getElementById('calendarView').classList.add('active');
+        document.getElementById('prevMonthBtn').style.display = 'flex';
+        document.getElementById('nextMonthBtn').style.display = 'flex';
+        const monthBtn = document.getElementById('monthDisplayBtn');
+        monthBtn.style.display = 'block';
+        const menuBtn = document.getElementById('toggleMenuBtn');
+        if (menuBtn) menuBtn.style.display = 'flex';
+        const searchBtn = document.getElementById('toggleSearchBtn');
+        if (searchBtn) searchBtn.style.display = 'flex';
+        const searchWrap = document.getElementById('searchBoxWrap');
+        if (searchWrap) searchWrap.classList.remove('active');
+        const searchDrop = document.getElementById('searchDropdown');
+        if (searchDrop) searchDrop.classList.remove('active');
+        renderCalendar();
       };
       document.getElementById('brandHomeBtn').addEventListener('click', backToCalendar);
 
