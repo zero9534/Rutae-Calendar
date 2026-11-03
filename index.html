@@ -2160,15 +2160,15 @@ window.editRecord = function(id) {
 
 document.getElementById('closeCatPanelBtn').addEventListener('click', closeCategoryPanel);
 
-// 바깥 영역 클릭 시 카테고리 패널 자동 닫기
+// 바깥 영역 클릭 및 터치/스와이프 시 카테고리 패널 자동 닫기
       function handleCloseCatPanelOutside(e) {
         const panel = document.getElementById('categorySidePanel');
         if (!panel || !panel.classList.contains('active')) return;
 
-        // 1. 패널 내부에서 발생한 스와이프/터치는 닫지 않음
+        // 1. 패널 내부를 만졌을 때는 절대 닫지 않음
         if (panel.contains(e.target)) return;
 
-        // 2. '+ 카테고리 추가하기' 및 관련 버튼 터치 시 닫히는 현상 차단
+        // 2. '+ 카테고리 추가하기' 등 관련 버튼 터치 시 즉시 닫힘 방지
         if (
           e.target.closest('#openCatPanelBtn') ||
           e.target.closest('.cat-open-btn') ||
@@ -2181,12 +2181,11 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
         closeCategoryPanel();
       }
 
-      // 클릭할 때 닫기
+      // 클릭, 터치 시작(스와이프 준비 동작), PC 마우스 누름, 휠 스크롤 감지
       document.addEventListener('click', handleCloseCatPanelOutside);
-      // 모바일/태블릿에서 바깥 화면을 옆으로 스와이프(터치 이동)할 때 닫기
-      document.addEventListener('touchmove', handleCloseCatPanelOutside, { passive: true });
-      // PC에서 휠 스크롤할 때 닫기
+      document.addEventListener('touchstart', handleCloseCatPanelOutside, { passive: true });
       window.addEventListener('wheel', handleCloseCatPanelOutside, { passive: true });
+    }
 
     function renderCompactCatList() {
       const box = document.getElementById('catCompactList');
