@@ -1624,6 +1624,116 @@
     .confirm-delete-btn:hover {
       background: #dc2626;
     }
+
+    /* ========================================================
+       모바일 최적화 미디어 쿼리 (스마트폰 전용: max-width 768px)
+       PC 및 태블릿 화면에는 전혀 영향을 주지 않습니다.
+    ======================================================== */
+    @media (max-width: 768px) {
+      /* 1. 상단 헤더 여백 및 타이틀 간소화 */
+      header {
+        padding: 8px 12px;
+      }
+      .brand-badge {
+        font-size: 13px;
+        padding: 5px 10px;
+        gap: 4px;
+      }
+      .month-display-pill {
+        font-size: 13.5px;
+        padding: 5px 12px;
+      }
+
+      /* 2. 메인 패딩 축소 */
+      main {
+        padding: 10px 8px;
+      }
+      .cal-wrapper {
+        padding: 8px;
+        border-radius: 14px;
+      }
+      .cal-grid {
+        gap: 3px;
+      }
+
+      /* 3. 월별 달력 셀: 높이 고정 및 모바일 비율 최적화 */
+      .cal-day-cell {
+        min-height: 78px;
+        max-height: 88px;
+        padding: 4px 2px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .day-num {
+        font-size: 12px;
+        margin-left: 2px;
+      }
+
+      /* 대표 멘트 뱃지: 세로 꺾임 방지, 1줄 말줄임, 크기 컴팩트화 */
+      .rep-badge-tile {
+        margin-top: 3px;
+        padding: 2px 3px;
+        font-size: 10px;
+        line-height: 1.2;
+        border-radius: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        text-align: center;
+        -webkit-line-clamp: unset;
+      }
+
+      /* 기념일 뱃지: 모바일 축소 */
+      .anniversary-badge-tile {
+        margin-top: 2px;
+        padding: 2px 3px;
+        font-size: 9.5px;
+        border-radius: 5px;
+      }
+
+      /* 4. 일차별 상세 뷰: 대표 멘트 & ON/OFF 줄바꿈 */
+      .rep-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px 14px;
+      }
+      .rep-left-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .rep-input-expand {
+        max-width: 220px !important;
+      }
+      .stream-time-group {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      /* 5. 방송 기록 카드 및 입력창 모바일 너비 조정 */
+      .record-card {
+        padding: 14px;
+      }
+      .form-top-row {
+        flex-direction: column;
+      }
+      .custom-select-box {
+        width: 100%;
+      }
+      .record-textarea {
+        width: 100%;
+      }
+
+      /* 6. 우측 타임라인: 모바일에서는 본체 바로 아래 자연스러운 카드로 안착 */
+      .timeline-side-panel {
+        position: static !important;
+        width: 100% !important;
+        margin-top: 14px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+      }
+    }
+    
   </style>
 </head>
 <body>
