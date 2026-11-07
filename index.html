@@ -1625,23 +1625,59 @@
       background: #dc2626;
     }
 
-    /* ========================================================
+/* ========================================================
        모바일 최적화 미디어 쿼리 (스마트폰 전용: max-width 768px)
        PC 및 태블릿 화면에는 전혀 영향을 주지 않습니다.
     ======================================================== */
     @media (max-width: 768px) {
-      /* 1. 상단 헤더 여백 및 타이틀 간소화 */
+      /* 1. 상단 헤더: 공간 확보 및 가운데 년/월 글자 꺾임 완벽 방지 */
       header {
-        padding: 8px 12px;
+        padding: 8px 10px;
       }
+      .header-content {
+        gap: 6px;
+      }
+
+      /* 모바일에서는 '🐸 루태'처럼 텍스트를 간결하게 축소 */
       .brand-badge {
-        font-size: 13px;
-        padding: 5px 10px;
+        font-size: 12.5px;
+        padding: 5px 8px;
+        gap: 4px;
+        white-space: nowrap;
+      }
+      .brand-badge span:last-child {
+        display: none; /* '루태 캘린더' 대신 아래 :after로 '루태'만 노출 */
+      }
+      .brand-badge::after {
+        content: '루태';
+        font-weight: 900;
+      }
+
+      /* 중앙 네비게이션: 절대위치 해제하고 자연스럽게 가운데 정렬 */
+      .month-nav-bar {
+        position: static;
+        transform: none;
         gap: 4px;
       }
+      .nav-arrow-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+      }
       .month-display-pill {
-        font-size: 13.5px;
-        padding: 5px 12px;
+        font-size: 12.5px;
+        padding: 5px 9px;
+        white-space: nowrap; /* 줄바꿈 절대 금지 */
+      }
+
+      /* 우측 액션 버튼 크기 슬림화 */
+      .header-actions {
+        gap: 5px;
+      }
+      .icon-action-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
       }
 
       /* 2. 메인 패딩 축소 */
@@ -1649,7 +1685,7 @@
         padding: 10px 8px;
       }
       .cal-wrapper {
-        padding: 8px;
+        padding: 8px 6px;
         border-radius: 14px;
       }
       .cal-grid {
