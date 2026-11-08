@@ -253,6 +253,33 @@
       border-radius: 4px;
     }
 
+/* 상단 검색창 전체 / 해당 월 토글 알약 */
+    .search-scope-tabs {
+      display: flex;
+      gap: 3px;
+      margin-right: 6px;
+      background: #f1f5f9;
+      padding: 2px;
+      border-radius: 9999px;
+    }
+    .search-scope-btn {
+      border: none;
+      background: transparent;
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.12s;
+      white-space: nowrap;
+    }
+    .search-scope-btn.active {
+      background: #2e7d32;
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+    
 /* 검색창 */
     .search-box-wrap {
       display: none;
@@ -1821,8 +1848,12 @@
       </div>
 
       <div class="header-actions">
-        <div class="search-box-wrap" id="searchBoxWrap">
+       <div class="search-box-wrap" id="searchBoxWrap">
           <i class="fa-solid fa-magnifying-glass" style="color:var(--primary-green); font-size:12px; margin-right:6px;"></i>
+          <div class="search-scope-tabs">
+            <button type="button" class="search-scope-btn active" id="searchScopeAllBtn">전체</button>
+            <button type="button" class="search-scope-btn" id="searchScopeMonthBtn">이달</button>
+          </div>
           <input type="text" id="searchInput" placeholder="내용 검색" autocomplete="off">
           <button class="search-clear-btn" id="searchClearBtn" title="지우기">
             <i class="fa-solid fa-xmark"></i>
@@ -2958,6 +2989,28 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
       const searchInput = document.getElementById('searchInput');
       const clearBtn = document.getElementById('searchClearBtn');
       const dropdown = document.getElementById('searchDropdown');
+      const scopeAllBtn = document.getElementById('searchScopeAllBtn');
+      const scopeMonthBtn = document.getElementById('searchScopeMonthBtn');
+
+      let currentSearchScope = 'all'; // 'all' 또는 'month'
+
+      if (scopeAllBtn && scopeMonthBtn) {
+        scopeAllBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          currentSearchScope = 'all';
+          scopeAllBtn.classList.add('active');
+          scopeMonthBtn.classList.remove('active');
+          searchInput.dispatchEvent(new Event('input'));
+        });
+
+        scopeMonthBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          currentSearchScope = 'month';
+          scopeMonthBtn.classList.add('active');
+          scopeAllBtn.classList.remove('active');
+          searchInput.dispatchEvent(new Event('input'));
+        });
+      }
 
       function escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -2999,6 +3052,10 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
         /* 모든 날짜의 일차별 상세 기록(내용)을 전수 검색 (대표 멘트, 치지직 링크 제외) */
         const allDates = Object.keys(archiveData).sort((a, b) => b.localeCompare(a));
         allDates.forEach(dateKey => {
+          if (currentSearchScope === 'month') {
+            const currentMonthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+            if (!dateKey.startsWith(currentMonthPrefix)) return;
+          }
           const dayData = archiveData[dateKey];
           if (dayData && dayData.records && dayData.records.length > 0) {
             dayData.records.forEach(r => {
