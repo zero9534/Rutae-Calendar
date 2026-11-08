@@ -3018,7 +3018,7 @@ function initSearch() {
         searchInput.focus();
       });
 
-      function executeSearch() {
+function executeSearch() {
         const keyword = searchInput.value.trim();
         if (!keyword) {
           dropdown.classList.remove('active');
@@ -3027,7 +3027,11 @@ function initSearch() {
 
         const lowerKeyword = keyword.toLowerCase();
         const allResults = [];
-        const monthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+        
+        // 현재 보고 있는 달력의 연도와 월을 실시간으로 반영
+        const targetYear = currentYear;
+        const targetMonth = currentMonth + 1;
+        const monthPrefix = `${targetYear}-${String(targetMonth).padStart(2, '0')}`;
 
 const allDates = Object.keys(archiveData).sort((a, b) => b.localeCompare(a));
         allDates.forEach(dateKey => {
@@ -3086,7 +3090,7 @@ const allDates = Object.keys(archiveData).sort((a, b) => b.localeCompare(a));
         tabHeader.className = 'search-res-header-tabs';
         tabHeader.innerHTML = `
           <button type="button" class="search-tab-pill ${currentSearchScope === 'all' ? 'active' : ''}" id="tabSearchAll">전체 (${allCount})</button>
-          <button type="button" class="search-tab-pill ${currentSearchScope === 'month' ? 'active' : ''}" id="tabSearchMonth">${currentMonth + 1}월 (${monthCount})</button>
+          <button type="button" class="search-tab-pill ${currentSearchScope === 'month' ? 'active' : ''}" id="tabSearchMonth">${targetMonth}월 (${monthCount})</button>
         `;
         dropdown.appendChild(tabHeader);
 
