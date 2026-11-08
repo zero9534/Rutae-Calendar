@@ -3920,11 +3920,11 @@ if (pendingDeleteTimelineId) {
 
                 const centerX = badgeBoxX + (badgeBoxW / 2);
 
-                if (isMultiLine) {
-                  ctx.fillText(line1, centerX, itemOffsetY + 10);
-                  ctx.fillText(line2, centerX, itemOffsetY + 24);
+                  if (isMultiLine) {
+                  ctx.fillText(line1, textX, itemOffsetY + 10);
+                  ctx.fillText(line2, textX, itemOffsetY + 24);
                 } else {
-                  ctx.fillText(line1, centerX, itemOffsetY + (badgeBoxH / 2));
+                  ctx.fillText(line1, textX, itemOffsetY + (badgeBoxH / 2));
                 }
 
                 itemOffsetY += badgeBoxH + 4;
