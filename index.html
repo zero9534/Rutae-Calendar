@@ -3116,6 +3116,94 @@ function initSearch() {
       });
     }
 
+    function initYearMonthPicker() {
+      const pillBtn = document.getElementById('monthDisplayBtn');
+      const pickerPop = document.getElementById('yearMonthPickerPop');
+      const yearText = document.getElementById('pickerYearDisplay');
+      const prevYearBtn = document.getElementById('pickerPrevYearBtn');
+      const nextYearBtn = document.getElementById('pickerNextYearBtn');
+      const monthsGrid = document.getElementById('pickerMonthsGrid');
+
+      let pressTimer = null;
+      let isLongPressTriggered = false;
+
+      function renderPickerMonths() {
+        yearText.textContent = `${pickerViewingYear}년`;
+        monthsGrid.innerHTML = '';
+        for (let m = 0; m < 12; m++) {
+          const btn = document.createElement('div');
+          btn.className = 'ym-month-cell' + (pickerViewingYear === currentYear && m === currentMonth ? ' current' : '');
+          btn.textContent = `${m + 1}월`;
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentYear = pickerViewingYear;
+            currentMonth = m;
+            renderCalendar();
+            pickerPop.classList.remove('active');
+          });
+          monthsGrid.appendChild(btn);
+        }
+      }
+
+      function startLongPress(e) {
+        const calView = document.getElementById('calendarView');
+        if (!calView.classList.contains('active')) return;
+
+        isLongPressTriggered = false;
+        clearTimeout(pressTimer);
+        pressTimer = setTimeout(() => {
+          isLongPressTriggered = true;
+          pickerViewingYear = currentYear;
+          renderPickerMonths();
+          pickerPop.classList.add('active');
+        }, 1000);
+      }
+
+      function cancelLongPress() {
+        clearTimeout(pressTimer);
+      }
+
+      pillBtn.addEventListener('mousedown', startLongPress);
+      pillBtn.addEventListener('touchstart', startLongPress, { passive: true });
+
+      pillBtn.addEventListener('mouseup', cancelLongPress);
+      pillBtn.addEventListener('mouseleave', cancelLongPress);
+      pillBtn.addEventListener('touchend', cancelLongPress);
+      pillBtn.addEventListener('touchcancel', cancelLongPress);
+
+      pillBtn.addEventListener('click', (e) => {
+        if (isLongPressTriggered) {
+          isLongPressTriggered = false;
+          return;
+        }
+
+        const calView = document.getElementById('calendarView');
+        if (!calView.classList.contains('active')) {
+          if (typeof window.backToCalendar === 'function') {
+            window.backToCalendar();
+          }
+        }
+      });
+
+      prevYearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        pickerViewingYear--;
+        renderPickerMonths();
+      });
+
+      nextYearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        pickerViewingYear++;
+        renderPickerMonths();
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!pickerPop.contains(e.target) && e.target !== pillBtn) {
+          pickerPop.classList.remove('active');
+        }
+      });
+    }
+
     window.addEventListener('DOMContentLoaded', () => {    
       loadStorage();
       renderCalendar();
