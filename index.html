@@ -3799,53 +3799,134 @@ if (pendingDeleteTimelineId) {
 
               let itemOffsetY = cy + 34;
 
-              /* 기념일 배지 우선 그리기 */
+/* 기념일 배지 그리기 */
               if (dayData && dayData.anniversary && dayData.anniversary.trim()) {
-                const annivBoxW = cellWidth - 24;
+                const annivBoxW = cellWidth - 20;
                 const annivBoxH = 22;
                 ctx.fillStyle = '#fef3c7';
                 ctx.beginPath();
-                ctx.roundRect(cx + 12, itemOffsetY, annivBoxW, annivBoxH, 7);
+                ctx.roundRect(cx + 10, itemOffsetY, annivBoxW, annivBoxH, 6);
                 ctx.fill();
 
                 ctx.strokeStyle = '#fde68a';
-                ctx.lineWidth = 1.5;
+                ctx.lineWidth = 1.2;
                 ctx.stroke();
 
                 ctx.fillStyle = '#b45309';
                 ctx.font = '800 10.5px Pretendard, -apple-system, sans-serif';
                 ctx.textBaseline = 'middle';
-                ctx.textAlign = 'left';
-                const annivText = '🎉 ' + dayData.anniversary.trim();
-                ctx.fillText(annivText.length > 8 ? annivText.slice(0, 8) + '..' : annivText, cx + 16, itemOffsetY + 11);
-                itemOffsetY += annivBoxH + 4;
+                ctx.textAlign = 'center';
+
+                let annivText = '🎉 ' + dayData.anniversary.trim();
+                const maxAnnivTextW = annivBoxW - 12;
+                while (ctx.measureText(annivText).width > maxAnnivTextW && annivText.length > 3) {
+                  annivText = annivText.slice(0, -2) + '..';
+                }
+                ctx.fillText(annivText, cx + 10 + (annivBoxW / 2), itemOffsetY + (annivBoxH / 2));
+                itemOffsetY += annivBoxH + 5;
               }
 
-              /* 대표 멘트 그리기 */
+              /* 대표 멘트 그리기 (단어 단위 줄바꿈 + 유동 폰트 크기) */
               if (dayData && dayData.repBadge && dayData.repBadge.trim()) {
-                const badgeBoxW = cellWidth - 24;
-                const badgeBoxH = 34;
+                const badgeBoxW = cellWidth - 20;
+                const badgeBoxX = cx + 10;
+                const rawText = dayData.repBadge.trim();
+                const maxW = badgeBoxW - 14;
+
+                // 1. 기본 폰트로 한 줄에 들어가는지 체크
+                let fontSize = 11;
+                ctx.font = `800 ${fontSize}px Pretendard, -apple-system, sans-serif`;
+
+                let line1 = '';
+                let line2 = '';
+                let isMultiLine = false;
+
+                if (ctx.measureText(rawText).width <= maxW) {
+                  line1 = rawText;
+                } else {
+                  // 살짝 폰트를 줄여서 한 줄에 들어가는지 한 번 더 확인 (예: '노캠 모드 개발'을 한 줄로 압축)
+                  ctx.font = `800 9.5px Pretendard, -apple-system, sans-serif`;
+                  if (ctx.measureText(rawText).width <= maxW) {
+                    fontSize = 9.5;
+                    line1 = rawText;
+                  } else {
+                    // 정말 길어서 2줄로 가야 할 경우: 단어(공백) 단위로 자연스럽게 분할
+                    isMultiLine = true;
+                    fontSize = 10;
+                    ctx.font = `800 ${fontSize}px Pretendard, -apple-system, sans-serif`;
+
+                    const words = rawText.split(' ');
+                    if (words.length > 1) {
+                      let tempLine = '';
+                      let splitAt = 0;
+                      for (let i = 0; i < words.length; i++) {
+                        const testLine = tempLine ? tempLine + ' ' + words[i] : words[i];
+                        if (ctx.measureText(testLine).width <= maxW) {
+                          tempLine = testLine;
+                          splitAt = i;
+                        } else {
+                          break;
+                        }
+                      }
+                      // 첫 단어부터 너무 길어서 안 들어갈 경우 글자 단위로 분할
+                      if (!tempLine) {
+                        for (let c = 1; c <= rawText.length; c++) {
+                          if (ctx.measureText(rawText.slice(0, c)).width > maxW) {
+                            line1 = rawText.slice(0, c - 1);
+                            line2 = rawText.slice(c - 1);
+                            break;
+                          }
+                        }
+                      } else {
+                        line1 = words.slice(0, splitAt + 1).join(' ');
+                        line2 = words.slice(splitAt + 1).join(' ');
+                      }
+                    } else {
+                      // 띄어쓰기가 없는 한 덩어리 글자일 때
+                      for (let c = 1; c <= rawText.length; c++) {
+                        if (ctx.measureText(rawText.slice(0, c)).width > maxW) {
+                          line1 = rawText.slice(0, c - 1);
+                          line2 = rawText.slice(c - 1);
+                          break;
+                        }
+                      }
+                    }
+
+                    // 2번째 줄 말줄임표 처리
+                    if (ctx.measureText(line2).width > maxW) {
+                      while (ctx.measureText(line2 + '..').width > maxW && line2.length > 1) {
+                        line2 = line2.slice(0, -1);
+                      }
+                      line2 += '..';
+                    }
+                  }
+                }
+
+                const badgeBoxH = isMultiLine ? 34 : 24;
+
                 ctx.fillStyle = '#e8f5e9';
                 ctx.beginPath();
-                ctx.roundRect(cx + 12, itemOffsetY, badgeBoxW, badgeBoxH, 8);
+                ctx.roundRect(badgeBoxX, itemOffsetY, badgeBoxW, badgeBoxH, 7);
                 ctx.fill();
 
                 ctx.strokeStyle = '#a3d9b1';
-                ctx.lineWidth = 1.5;
+                ctx.lineWidth = 1.2;
                 ctx.stroke();
 
                 ctx.fillStyle = '#1b5e20';
-                ctx.font = '800 11px Pretendard, -apple-system, sans-serif';
-                ctx.textBaseline = 'top';
-                ctx.textAlign = 'left';
+                ctx.font = `800 ${fontSize}px Pretendard, -apple-system, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
 
-                const text = dayData.repBadge.trim();
-                if (text.length > 7) {
-                  ctx.fillText(text.slice(0, 7), cx + 18, itemOffsetY + 5);
-                  ctx.fillText(text.slice(7, 14), cx + 18, itemOffsetY + 18);
+                const centerX = badgeBoxX + (badgeBoxW / 2);
+
+                if (isMultiLine) {
+                  ctx.fillText(line1, centerX, itemOffsetY + 10);
+                  ctx.fillText(line2, centerX, itemOffsetY + 24);
                 } else {
-                  ctx.fillText(text, cx + 18, itemOffsetY + 11);
+                  ctx.fillText(line1, centerX, itemOffsetY + (badgeBoxH / 2));
                 }
+
                 itemOffsetY += badgeBoxH + 4;
               }
             }
