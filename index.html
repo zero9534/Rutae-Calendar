@@ -3029,10 +3029,35 @@ function initSearch() {
         const allResults = [];
         const monthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
 
-        const allDates = Object.keys(archiveData).sort((a, b) => b.localeCompare(a));
+const allDates = Object.keys(archiveData).sort((a, b) => b.localeCompare(a));
         allDates.forEach(dateKey => {
           const dayData = archiveData[dateKey];
-          if (dayData && dayData.records && dayData.records.length > 0) {
+          if (!dayData) return;
+
+          const isThisMonth = dateKey.startsWith(monthPrefix);
+
+          // 1. 달력의 대표 멘트 검색
+          if (dayData.repBadge && dayData.repBadge.toLowerCase().includes(lowerKeyword)) {
+            allResults.push({
+              dateStr: dateKey,
+              categoryTitle: '🏷️ 대표멘트',
+              contentHtml: highlightText(dayData.repBadge, keyword),
+              isCurrentMonth: isThisMonth
+            });
+          }
+
+          // 2. 기념일 문구 검색
+          if (dayData.anniversary && dayData.anniversary.toLowerCase().includes(lowerKeyword)) {
+            allResults.push({
+              dateStr: dateKey,
+              categoryTitle: '🎉 기념일',
+              contentHtml: highlightText(dayData.anniversary, keyword),
+              isCurrentMonth: isThisMonth
+            });
+          }
+
+          // 3. 일차별 상세 방송 기록 검색
+          if (dayData.records && dayData.records.length > 0) {
             dayData.records.forEach(r => {
               if (r.text && r.text.toLowerCase().includes(lowerKeyword)) {
                 const catObj = categories.find(c => c.id === r.catId);
@@ -3041,7 +3066,7 @@ function initSearch() {
                   dateStr: dateKey,
                   categoryTitle: catName,
                   contentHtml: highlightText(r.text, keyword),
-                  isCurrentMonth: dateKey.startsWith(monthPrefix)
+                  isCurrentMonth: isThisMonth
                 });
               }
             });
