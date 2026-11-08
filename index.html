@@ -3915,12 +3915,12 @@ if (pendingDeleteTimelineId) {
 
                 ctx.fillStyle = '#1b5e20';
                 ctx.font = `800 ${fontSize}px Pretendard, -apple-system, sans-serif`;
-                ctx.textAlign = 'center';
+                ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
 
-                const centerX = badgeBoxX + (badgeBoxW / 2);
+                const textX = badgeBoxX + 8;
 
-                  if (isMultiLine) {
+                if (isMultiLine) {
                   ctx.fillText(line1, textX, itemOffsetY + 10);
                   ctx.fillText(line2, textX, itemOffsetY + 24);
                 } else {
