@@ -2263,8 +2263,6 @@
     // 초기화 즉시 등록
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initCategorySearchPage);
-    } else {
-      initCategorySearchPage();
     }
   
   <script>
@@ -4737,5 +4735,173 @@ if (pendingDeleteTimelineId) {
         .replace(/'/g, '&#039;');
     }
   </script>
+<script>
+  /* ==================== 카테고리 검색 전용 페이지 동작 로직 ==================== */
+  let spSelectedCategoryIds = [];
+
+  window.openSearchPage = function() {
+    const calView = document.getElementById('calendarView');
+    const detailView = document.getElementById('detailView');
+    const searchPageView = document.getElementById('searchPageView');
+
+    if (calView) calView.classList.remove('active');
+    if (detailView) detailView.classList.remove('active');
+    if (searchPageView) {
+      searchPageView.classList.add('active');
+      renderSpSideCategories();
+      renderSpSelectedTags();
+      executeCategorySearch();
+    }
+  };
+
+  window.closeSearchPage = function() {
+    const searchPageView = document.getElementById('searchPageView');
+    if (searchPageView) searchPageView.classList.remove('active');
+    if (typeof window.backToCalendar === 'function') {
+      window.backToCalendar();
+    }
+  };
+
+  function renderSpSideCategories() {
+    const grid = document.getElementById('spSideCategoryGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    categories.forEach(cat => {
+      const item = document.createElement('div');
+      const isSelected = spSelectedCategoryIds.includes(cat.id);
+      item.className = 'sp-side-cat-item' + (isSelected ? ' selected' : '');
+      item.innerHTML = `<span>${cat.emoji}</span> <span>${escapeHtml(cat.name)}</span>`;
+      
+      item.addEventListener('click', () => {
+        if (spSelectedCategoryIds.includes(cat.id)) {
+          spSelectedCategoryIds = spSelectedCategoryIds.filter(id => id !== cat.id);
+        } else {
+          spSelectedCategoryIds.push(cat.id);
+        }
+        renderSpSideCategories();
+        renderSpSelectedTags();
+        executeCategorySearch();
+      });
+      grid.appendChild(item);
+    });
+  }
+
+  function renderSpSelectedTags() {
+    const container = document.getElementById('spSelectedTagsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (spSelectedCategoryIds.length === 0) {
+      container.innerHTML = `<span style="font-size:12.5px; color:#94a3b8; font-weight:700;">선택된 카테고리가 없습니다. 전체 카테고리에서 검색합니다.</span>`;
+      return;
+    }
+
+    spSelectedCategoryIds.forEach(catId => {
+      const cat = categories.find(c => c.id === catId);
+      if (!cat) return;
+      const pill = document.createElement('div');
+      pill.className = 'sp-tag-pill';
+      pill.innerHTML = `
+        <span>${cat.emoji} ${escapeHtml(cat.name)}</span>
+        <button type="button" class="sp-tag-del-btn" title="삭제"><i class="fa-solid fa-xmark"></i></button>
+      `;
+      pill.querySelector('.sp-tag-del-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        spSelectedCategoryIds = spSelectedCategoryIds.filter(id => id !== catId);
+        renderSpSideCategories();
+        renderSpSelectedTags();
+        executeCategorySearch();
+      });
+      container.appendChild(pill);
+    });
+  }
+
+  function executeCategorySearch() {
+    const input = document.getElementById('spSearchInput');
+    const resultsContainer = document.getElementById('spResultsList');
+    if (!resultsContainer) return;
+
+    const keyword = input ? input.value.trim().toLowerCase() : '';
+    const matched = [];
+
+    const allDates = Object.keys(archiveData).sort((a, b) => b.localeCompare(a));
+    allDates.forEach(dateKey => {
+      const dayData = archiveData[dateKey];
+      if (!dayData || !dayData.records) return;
+
+      dayData.records.forEach(r => {
+        if (spSelectedCategoryIds.length > 0 && !spSelectedCategoryIds.includes(r.catId)) {
+          return;
+        }
+        if (keyword && (!r.text || !r.text.toLowerCase().includes(keyword))) {
+          return;
+        }
+
+        const catObj = categories.find(c => c.id === r.catId);
+        matched.push({
+          dateStr: dateKey,
+          category: catObj ? `${catObj.emoji} ${catObj.name}` : '기록',
+          text: r.text || ''
+        });
+      });
+    });
+
+    resultsContainer.innerHTML = '';
+    if (matched.length === 0) {
+      resultsContainer.innerHTML = `
+        <div style="padding:40px; text-align:center; color:#9ca3af; font-size:13px; font-weight:700;">
+          일치하는 기록이 없습니다.
+        </div>
+      `;
+      return;
+    }
+
+    matched.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'sp-result-card';
+      card.innerHTML = `
+        <div class="sp-card-top">
+          <span class="sp-card-cat-badge">${escapeHtml(item.category)}</span>
+          <span class="sp-card-date">${item.dateStr}</span>
+        </div>
+        <div class="sp-card-text">${escapeHtml(item.text)}</div>
+      `;
+      card.addEventListener('click', () => {
+        const searchPageView = document.getElementById('searchPageView');
+        if (searchPageView) searchPageView.classList.remove('active');
+        openDayDetail(item.dateStr);
+      });
+      resultsContainer.appendChild(card);
+    });
+  }
+
+  function initCategorySearchPage() {
+    const input = document.getElementById('spSearchInput');
+    const clearBtn = document.getElementById('spSearchClearBtn');
+    const openSideBtn = document.getElementById('spOpenSidePanelBtn');
+    const sidePanel = document.getElementById('spSideCategoryPanel');
+    const brandHomeBtn = document.getElementById('brandHomeBtn');
+
+    if (input) input.addEventListener('input', executeCategorySearch);
+    if (clearBtn && input) {
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        executeCategorySearch();
+        input.focus();
+      });
+    }
+    if (openSideBtn && sidePanel) {
+      openSideBtn.addEventListener('click', () => {
+        sidePanel.style.display = (sidePanel.style.display === 'none') ? 'block' : 'none';
+      });
+    }
+    if (brandHomeBtn) {
+      brandHomeBtn.addEventListener('click', window.closeSearchPage);
+    }
+  }
+
+  initCategorySearchPage();
+</script>  
 </body>
 </html>
