@@ -253,31 +253,34 @@
       border-radius: 4px;
     }
 
-/* 상단 검색창 전체 / 해당 월 토글 알약 */
-    .search-scope-tabs {
+/* 검색 결과창 상단 필터 탭 (시안 2 스타일) */
+    .search-res-header-tabs {
       display: flex;
-      gap: 3px;
-      margin-right: 6px;
-      background: #f1f5f9;
-      padding: 2px;
-      border-radius: 9999px;
+      gap: 6px;
+      padding: 4px 6px 8px 6px;
+      border-bottom: 1px solid #edf4f0;
+      margin-bottom: 4px;
     }
-    .search-scope-btn {
-      border: none;
-      background: transparent;
+    .search-tab-pill {
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
       font-size: 11px;
       font-weight: 800;
       color: #64748b;
-      padding: 3px 8px;
-      border-radius: 9999px;
+      padding: 4px 10px;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.12s;
-      white-space: nowrap;
     }
-    .search-scope-btn.active {
-      background: #2e7d32;
-      color: #ffffff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    .search-tab-pill:hover {
+      background: #f1f5f9;
+      color: #334155;
+    }
+    .search-tab-pill.active {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border-color: #a7f3d0;
+      font-weight: 900;
     }
     
 /* 검색창 */
@@ -1850,10 +1853,6 @@
       <div class="header-actions">
        <div class="search-box-wrap" id="searchBoxWrap">
           <i class="fa-solid fa-magnifying-glass" style="color:var(--primary-green); font-size:12px; margin-right:6px;"></i>
-          <div class="search-scope-tabs">
-            <button type="button" class="search-scope-btn active" id="searchScopeAllBtn">전체</button>
-            <button type="button" class="search-scope-btn" id="searchScopeMonthBtn">이달</button>
-          </div>
           <input type="text" id="searchInput" placeholder="내용 검색" autocomplete="off">
           <button class="search-clear-btn" id="searchClearBtn" title="지우기">
             <i class="fa-solid fa-xmark"></i>
@@ -2983,34 +2982,14 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
       }
     }
 
-    function initSearch() {
+function initSearch() {
       const toggleBtn = document.getElementById('toggleSearchBtn');
       const boxWrap = document.getElementById('searchBoxWrap');
       const searchInput = document.getElementById('searchInput');
       const clearBtn = document.getElementById('searchClearBtn');
       const dropdown = document.getElementById('searchDropdown');
-      const scopeAllBtn = document.getElementById('searchScopeAllBtn');
-      const scopeMonthBtn = document.getElementById('searchScopeMonthBtn');
 
       let currentSearchScope = 'all'; // 'all' 또는 'month'
-
-      if (scopeAllBtn && scopeMonthBtn) {
-        scopeAllBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          currentSearchScope = 'all';
-          scopeAllBtn.classList.add('active');
-          scopeMonthBtn.classList.remove('active');
-          searchInput.dispatchEvent(new Event('input'));
-        });
-
-        scopeMonthBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          currentSearchScope = 'month';
-          scopeMonthBtn.classList.add('active');
-          scopeAllBtn.classList.remove('active');
-          searchInput.dispatchEvent(new Event('input'));
-        });
-      }
 
       function escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -3039,44 +3018,73 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
         searchInput.focus();
       });
 
-      searchInput.addEventListener('input', (e) => {
-        const keyword = e.target.value.trim();
+      function executeSearch() {
+        const keyword = searchInput.value.trim();
         if (!keyword) {
           dropdown.classList.remove('active');
           return;
         }
 
         const lowerKeyword = keyword.toLowerCase();
-        const results = [];
+        const allResults = [];
+        const monthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
 
-        /* 모든 날짜의 일차별 상세 기록(내용)을 전수 검색 (대표 멘트, 치지직 링크 제외) */
         const allDates = Object.keys(archiveData).sort((a, b) => b.localeCompare(a));
         allDates.forEach(dateKey => {
-          if (currentSearchScope === 'month') {
-            const currentMonthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
-            if (!dateKey.startsWith(currentMonthPrefix)) return;
-          }
           const dayData = archiveData[dateKey];
           if (dayData && dayData.records && dayData.records.length > 0) {
             dayData.records.forEach(r => {
               if (r.text && r.text.toLowerCase().includes(lowerKeyword)) {
                 const catObj = categories.find(c => c.id === r.catId);
                 const catName = catObj ? `${catObj.emoji} ${catObj.name}` : '기록';
-                results.push({
+                allResults.push({
                   dateStr: dateKey,
                   categoryTitle: catName,
-                  contentHtml: highlightText(r.text, keyword)
+                  contentHtml: highlightText(r.text, keyword),
+                  isCurrentMonth: dateKey.startsWith(monthPrefix)
                 });
               }
             });
           }
         });
 
+        const allCount = allResults.length;
+        const monthCount = allResults.filter(r => r.isCurrentMonth).length;
+
+        const displayResults = currentSearchScope === 'month' 
+          ? allResults.filter(r => r.isCurrentMonth) 
+          : allResults;
+
         dropdown.innerHTML = '';
-        if (results.length === 0) {
-          dropdown.innerHTML = `<div style="padding:12px; text-align:center; color:#9ca3af; font-size:12.5px; font-weight:700;">'${escapeHtml(keyword)}' 검색 결과가 없습니다.</div>`;
+
+        const tabHeader = document.createElement('div');
+        tabHeader.className = 'search-res-header-tabs';
+        tabHeader.innerHTML = `
+          <button type="button" class="search-tab-pill ${currentSearchScope === 'all' ? 'active' : ''}" id="tabSearchAll">전체 (${allCount})</button>
+          <button type="button" class="search-tab-pill ${currentSearchScope === 'month' ? 'active' : ''}" id="tabSearchMonth">${currentMonth + 1}월 (${monthCount})</button>
+        `;
+        dropdown.appendChild(tabHeader);
+
+        tabHeader.querySelector('#tabSearchAll').addEventListener('click', (e) => {
+          e.stopPropagation();
+          currentSearchScope = 'all';
+          executeSearch();
+        });
+        tabHeader.querySelector('#tabSearchMonth').addEventListener('click', (e) => {
+          e.stopPropagation();
+          currentSearchScope = 'month';
+          executeSearch();
+        });
+
+        if (displayResults.length === 0) {
+          const emptyDiv = document.createElement('div');
+          emptyDiv.style.cssText = 'padding:14px; text-align:center; color:#9ca3af; font-size:12.5px; font-weight:700;';
+          emptyDiv.textContent = currentSearchScope === 'month' 
+            ? `${currentMonth + 1}월에는 '${keyword}' 검색 결과가 없습니다.` 
+            : `'${keyword}' 검색 결과가 없습니다.`;
+          dropdown.appendChild(emptyDiv);
         } else {
-          results.forEach(res => {
+          displayResults.forEach(res => {
             const item = document.createElement('div');
             item.className = 'search-result-item';
             item.innerHTML = `
@@ -3096,100 +3104,14 @@ document.getElementById('closeCatPanelBtn').addEventListener('click', closeCateg
           });
         }
         dropdown.classList.add('active');
-      });
+      }
+
+      searchInput.addEventListener('input', executeSearch);
 
       document.addEventListener('click', (e) => {
         if (!boxWrap.contains(e.target) && !dropdown.contains(e.target) && e.target !== toggleBtn) {
           boxWrap.classList.remove('active');
           dropdown.classList.remove('active');
-        }
-      });
-    }
-
-    function initYearMonthPicker() {
-      const pillBtn = document.getElementById('monthDisplayBtn');
-      const pickerPop = document.getElementById('yearMonthPickerPop');
-      const yearText = document.getElementById('pickerYearDisplay');
-      const prevYearBtn = document.getElementById('pickerPrevYearBtn');
-      const nextYearBtn = document.getElementById('pickerNextYearBtn');
-      const monthsGrid = document.getElementById('pickerMonthsGrid');
-
-      let pressTimer = null;
-      let isLongPressTriggered = false;
-
-      function renderPickerMonths() {
-        yearText.textContent = `${pickerViewingYear}년`;
-        monthsGrid.innerHTML = '';
-        for (let m = 0; m < 12; m++) {
-          const btn = document.createElement('div');
-          btn.className = 'ym-month-cell' + (pickerViewingYear === currentYear && m === currentMonth ? ' current' : '');
-          btn.textContent = `${m + 1}월`;
-          btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentYear = pickerViewingYear;
-            currentMonth = m;
-            renderCalendar();
-            pickerPop.classList.remove('active');
-          });
-          monthsGrid.appendChild(btn);
-        }
-      }
-
-      function startLongPress(e) {
-        const calView = document.getElementById('calendarView');
-        if (!calView.classList.contains('active')) return;
-
-        isLongPressTriggered = false;
-        clearTimeout(pressTimer);
-        pressTimer = setTimeout(() => {
-          isLongPressTriggered = true;
-          pickerViewingYear = currentYear;
-          renderPickerMonths();
-          pickerPop.classList.add('active');
-        }, 1000);
-      }
-
-      function cancelLongPress() {
-        clearTimeout(pressTimer);
-      }
-
-      pillBtn.addEventListener('mousedown', startLongPress);
-      pillBtn.addEventListener('touchstart', startLongPress, { passive: true });
-
-      pillBtn.addEventListener('mouseup', cancelLongPress);
-      pillBtn.addEventListener('mouseleave', cancelLongPress);
-      pillBtn.addEventListener('touchend', cancelLongPress);
-      pillBtn.addEventListener('touchcancel', cancelLongPress);
-
-pillBtn.addEventListener('click', (e) => {
-        if (isLongPressTriggered) {
-          isLongPressTriggered = false;
-          return;
-        }
-
-        const calView = document.getElementById('calendarView');
-        if (!calView.classList.contains('active')) {
-          if (typeof window.backToCalendar === 'function') {
-            window.backToCalendar();
-          }
-        }
-      });
-
-      prevYearBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        pickerViewingYear--;
-        renderPickerMonths();
-      });
-
-      nextYearBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        pickerViewingYear++;
-        renderPickerMonths();
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!pickerPop.contains(e.target) && e.target !== pillBtn) {
-          pickerPop.classList.remove('active');
         }
       });
     }
